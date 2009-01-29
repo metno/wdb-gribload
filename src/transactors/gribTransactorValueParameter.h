@@ -47,7 +47,7 @@
 #include <wdbException.h>
 #include <wdbDoNotLoadException.h>
 #include <wdbLogHandler.h>
-#include <WdbLevel.h>
+#include <wdb/WdbLevel.h>
 
 // SYSTEM INCLUDES
 #include <pqxx/transactor>

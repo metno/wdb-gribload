@@ -43,9 +43,9 @@
  */
 
 // PROJECT INCLUDES
-#include <LoaderDatabaseConnection.h>
+#include <wdb/LoaderDatabaseConnection.h>
 #include <GribDatabaseInterface.h>
-#include <WdbLevel.h>
+#include <wdb/WdbLevel.h>
 
 // SYSTEM INCLUDES
 #include <pqxx/connection>

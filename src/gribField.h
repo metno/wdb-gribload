@@ -42,7 +42,7 @@
 
 // PROJECT INCLUDES
 #include <wmoCodeTables.h>
-#include <WdbLevel.h>
+#include <wdb/WdbLevel.h>
 #include <gribGridDefinition.h>
 // SYSTEM INCLUDES
 #include <string>

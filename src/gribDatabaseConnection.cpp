@@ -44,17 +44,13 @@
 // CLASS
 #include <gribDatabaseConnection.h>
 // PROJECT INCLUDES
-#include <transactors/loaderTransactorWci.h>
-#include <transactors/loaderTransactorValue.h>
-#include <transactors/loaderTransactorSrid.h>
-#include <transactors/loaderTransactorPlaceDefinition.h>
 #include <transactors/gribTransactorDataProvider.h>
 #include <transactors/gribTransactorValueParameter.h>
 #include <transactors/gribTransactorLevelParameter.h>
 #include <wdbException.h>
 #include <wdbEmptyResultException.h>
 #include <wdbDoNotLoadException.h>
-#include <wdbSetup.h>
+#include <wdb/wdbSetup.h>
 // SYSTEM INCLUDES
 #include <string>
 #include <iostream>

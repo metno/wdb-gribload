@@ -47,7 +47,7 @@
 #include "GribHandleReader.h"
 //#include <GribDatabaseInterface.h>
 #include <gribDatabaseConnection.h>
-#include <wdbSetup.h>
+#include <wdb/wdbSetup.h>
 #include <wdbEmptyResultException.h>
 #include <wdbLogHandler.h>
 #include <WdbProjection.h>

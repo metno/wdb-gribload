@@ -1,7 +1,7 @@
 #ifndef GRIBDATABASEINTERFACE_H_
 #define GRIBDATABASEINTERFACE_H_
 
-#include <WdbLevel.h>
+#include <wdb/WdbLevel.h>
 #include <string>
 #include <vector>
 

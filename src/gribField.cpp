@@ -47,7 +47,7 @@
 #include <gribGridDefinition.h>
 #include <gribDatabaseConnection.h>
 #include <grib_api.h>
-#include <wdbSetup.h>
+#include <wdb/wdbSetup.h>
 #include <wdbDoNotLoadException.h>
 #include <wdbLogHandler.h>
 // SYSTEM INCLUDES

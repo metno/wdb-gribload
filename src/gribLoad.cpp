@@ -48,7 +48,7 @@
 #include <gribField.h>
 #include <gribDatabaseConnection.h>
 //#include <gribLoadConfiguration.h>
-#include <LoaderConfiguration.h>
+#include <wdb/LoaderConfiguration.h>
 // - Logging
 #include <wdbLogHandler.h>
 // - Exception
