@@ -14,13 +14,9 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([config/config.h.in])
 AC_CONFIG_HEADER([config/config.h])
 
-AC_PROG_LIBTOOL
-
 #-----------------------------------------------------------------------------
 # Source & Build Directories
 #-----------------------------------------------------------------------------
-
-
 
 #-----------------------------------------------------------------------------
 # Programs
@@ -29,10 +25,11 @@ AC_PROG_LIBTOOL
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_AWK
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
-
+AC_PROG_LIBTOOL
 
 #-----------------------------------------------------------------------------
 # Checks
@@ -65,8 +62,11 @@ VL_LIB_READLINE
 #-----------------------------------------------------------------------------
 
 # wdb
-#PKG_CHECK_MODULES(wdbLoaderBase, loaderBase)
 WDB_LOADERBASE_CHECK
+
+WDB_PQXX_CHECK(2.6.8)
+
+WDB_GRIB_CHECK(1.2.0)
 
 # BOOST
 WDB_BOOST_CHECK(1.33.1)
@@ -74,13 +74,11 @@ WDB_BOOST_CHECK(1.33.1)
 # LOG4CPP
 WDB_LOG4CPP_CHECK(0.3.5rc3)
 
-WDB_GRIB_CHECK
-
 WDB_PROJ_CHECK
 
-WDB_PQXX_CHECK(2.6.8)
-
 WDB_CPPUNIT
+
+
 
 #-----------------------------------------------------------------------------
 # documentation
@@ -94,7 +92,6 @@ WDB_DOCBOOK_CHECK
 
 AM_INIT_AUTOMAKE(-Wall -Werror subdir-objects)
 AM_PROG_CC_C_O
-
 
 #-----------------------------------------------------------------------------
 # Configure and Exit

@@ -55,29 +55,29 @@ AC_PATH_PROG(GRIB_CONFIG, grib_info, no, $PATH)
 
 # Test Version >= "1.2.0"
 if test "$GRIB_CONFIG" != "no" ; then
-        AC_MSG_CHECKING(for grib_api version >= $min_grib_version)
+    AC_MSG_CHECKING(for grib_api version >= $min_grib_version)
 
-        grib_version="`$GRIB_CONFIG -v`"
+    grib_version="`$GRIB_CONFIG -v`"
 
-        # Convert versions to an integer e.g. 1.1.7 becomes 117
-        min_vers=`echo $min_grib_version | sed 's/\.//g'`
-        grib_vers=`echo $grib_version | sed 's/\.//g'`
+    # Convert versions to an integer e.g. 1.1.7 becomes 117
+    min_vers=`echo $min_grib_version | sed 's/\.//g'`
+    grib_vers=`echo $grib_version | sed 's/\.//g'`
 
-        if test -n "$grib_vers" -a "$grib_vers" -ge $min_vers; then
-                # All is good. Set up environment
-                AC_MSG_RESULT(yes)
+    if test -n "$grib_vers" -a "$grib_vers" -ge $min_vers; then
+        # All is good. Set up environment
+        AC_MSG_RESULT(yes)
 		CPPFLAGS="$CPPFLAGS $GRIB_CPPFLAGS"
 		LDFLAGS="$LDFLAGS $GRIB_LDFLAGS"
-        else
-                # Old version of grib_api
-                AC_MSG_RESULT(no)
+    else
+        # Old version of grib_api
+        AC_MSG_RESULT(no)
 		AC_MSG_ERROR([
 -------------------------------------------------------------------------
     The installed version of the Grib API is too old. Please upgrade 
     to at least version $min_grib_version!
 -------------------------------------------------------------------------
 ])
-        fi
+    fi
 else
         # grib_info could not be found. Grib API must be installed
 	AC_MSG_ERROR([
@@ -85,6 +85,8 @@ else
     Could not locate the grib_info utility. This indicates that the 
     Grib API is not installed correctly. If it is installed, use the 
     --with-gribapi=PATH option to specify the install location.
+
+    PATH: $PATH
 -------------------------------------------------------------------------
 ])
 fi
@@ -97,6 +99,8 @@ AC_CHECK_HEADER([grib_api.h],,
     Grib API is not installed correctly. If it is installed, use the 
     --with-gribapi=PATH option to specify the install location and 
     verify that grib_api.h is located in GRIBAPI_PATH/include
+
+    CPPFLAGS: $CPPFLAGS
 -------------------------------------------------------------------------
 ])
 	]
@@ -115,8 +119,7 @@ AC_SEARCH_LIBS(jas_stream_memopen,
 # automatically adds -lgrib to the LIBS variable
 AC_SEARCH_LIBS(grib_multi_support_on,
 		[grib_api grib],
-		[		
-		],
+		[],
 		[AC_MSG_ERROR([
 -------------------------------------------------------------------------
     Could not link with the grib_api library (or linking resulted in

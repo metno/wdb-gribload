@@ -289,6 +289,7 @@ GribField::getValidTimeFrom()
 		errorCheck( grib_get_long( gribHandle_, "indicatorOfUnitOfTimeRange",  &timeUnit), __func__ );
 		long int timeP1;
 		errorCheck( grib_get_long( gribHandle_, "periodOfTime",  &timeP1), __func__ );
+		log.infoStream() << "Got time P1: " << timeP1;
 	    validTimeF = referenceTime_ + duration( timeUnit, timeP1 );
 	    break;
 	case 1: // Valid at Reference Time
@@ -321,7 +322,8 @@ GribField::getValidTimeTo()
 		long int timeP1;
 		errorCheck( grib_get_long( gribHandle_, "periodOfTime",  &timeP1), __func__ );
     	validTimeT = referenceTime_  + duration( timeUnit, timeP1 );
-    	break;
+		log.infoStream() << "Got time P1: " << timeP1;
+		break;
     case 1:
     	validTimeT = referenceTime_;
     	break;
@@ -332,7 +334,8 @@ GribField::getValidTimeTo()
 		long int timeP2;
 		errorCheck( grib_get_long( gribHandle_, "periodOfTimeIntervals",  &timeP2), __func__ );
     	validTimeT = referenceTime_  + duration( timeUnit, timeP2 );
-    	break;
+		log.infoStream() << "Got time P2: " << timeP2;
+		break;
 	default:
         throw WdbException ( "Unrecognized time range in Grib Field", __func__);
     }

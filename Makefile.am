@@ -5,7 +5,6 @@
 # project Makefile
 #-----------------------------------------------------------------------------
 
-
 # Scanned by Autoreconf; must be static (no expansion)
 ACLOCAL_AMFLAGS = 		-I config
 				
@@ -13,16 +12,15 @@ ACLOCAL_AMFLAGS = 		-I config
 wdbdatadir = 			$(datadir)/wdb
 sqldir = 				$(wdbdatadir)/sql
 
-
 # Setting Targets
-pkglib_PROGRAMS = gribLoad
+pkglib_PROGRAMS = 		gribLoad
 
 # This is to be replaced by a "find wdb" macro:
-AM_CXXFLAGS = $(wdb_CFLAGS)
+AM_CXXFLAGS = 			$(wdb_CFLAGS)
 	
-gribLoad_CPPFLAGS =  -I$(top_srcdir)/src
-gribLoad_LDADD = $(wdb_LIBS) \
-				-lwdbLoaderBase -lwdbConfiguration -lwdbProjection -lwdbException -lwdbLogHandler
+gribLoad_CPPFLAGS =  	-I$(top_srcdir)/src
+gribLoad_LDADD =		-lwdbLoaderBase -lwdbConfiguration -lwdbProjection \
+						-lwdbException -lwdbLogHandler
 
 
 SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(WDB_VERSION)/g $<\
