@@ -64,8 +64,10 @@ VL_LIB_READLINE
 # wdb
 WDB_LOADERBASE_CHECK
 
+# PQXX
 WDB_PQXX_CHECK(2.6.8)
 
+# GRIB_API
 WDB_GRIB_CHECK(1.2.0)
 
 # BOOST
@@ -74,8 +76,10 @@ WDB_BOOST_CHECK(1.33.1)
 # LOG4CPP
 WDB_LOG4CPP_CHECK(0.3.5rc3)
 
+# PROJ
 WDB_PROJ_CHECK
 
+# CPPUNIT
 WDB_CPPUNIT
 
 
@@ -100,3 +104,26 @@ AM_PROG_CC_C_O
 # Configuration Files
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+
+# Print Out Summary of Configuration
+AC_MSG_RESULT([ ])
+AC_MSG_RESULT([$PACKAGE_NAME $PACKAGE_VERSION])
+AC_MSG_RESULT([Configuration:])
+AC_MSG_RESULT([-------------------------------------------------------------------------])
+AC_MSG_RESULT([ ])
+AC_MSG_RESULT([ Database Name:	  $DATABASE_NAME])
+AC_MSG_RESULT([ Source Code:      $srcdir])
+AC_MSG_RESULT([ Host System:      $host])
+AC_MSG_RESULT([  ])
+AC_MSG_RESULT([ Prefix:           $prefix])
+AC_MSG_RESULT([ Binaries:         $exec_prefix])
+AC_MSG_RESULT([ Manuals:          $mandir])
+AC_MSG_RESULT([ Data:             $datadir])
+AC_MSG_RESULT([ System Config:    $sysconfdir])
+AC_MSG_RESULT([ ])
+AC_MSG_RESULT([ CPPFLAGS:         $CPPFLAGS])
+AC_MSG_RESULT([ LDFLAGS:          $LDFLAGS])
+AC_MSG_RESULT([ LIBS:             $LIBS])
+AC_MSG_RESULT([  ])
+AC_MSG_RESULT([-------------------------------------------------------------------------])
+AC_MSG_RESULT([ ])
