@@ -21,7 +21,7 @@
 # Script Information
 export TESTCASE="F006_02"
 export TEST_DESCRIPTION="No loading of parameters with load set to false"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh

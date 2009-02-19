@@ -21,7 +21,7 @@
 # Script Information
 export TESTCASE="F003_01"
 export TEST_DESCRIPTION="Unknown grid definition"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh
@@ -49,7 +49,7 @@ EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
 source ${TEST_PATH}/tearDown.sh
 
 # Generate Test Data
-cp ${SRC_PATH}/test/install/loadingProgram/gribLoad/${TESTCASE_FILE}.grib ${TEST_FILE}
+cp ${SRC_PATH}/test/install/${TESTCASE_FILE}.grib ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE &> $LOGFILE

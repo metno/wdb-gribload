@@ -62,6 +62,7 @@ VL_LIB_READLINE
 #-----------------------------------------------------------------------------
 
 # wdb
+WDB_DATABASE_NAME
 WDB_LOADERBASE_CHECK
 
 # PQXX
@@ -102,7 +103,8 @@ AM_PROG_CC_C_O
 #-----------------------------------------------------------------------------
 
 # Configuration Files
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+				 test/install/Makefile])
 AC_OUTPUT
 
 # Print Out Summary of Configuration

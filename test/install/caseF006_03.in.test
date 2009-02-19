@@ -20,7 +20,7 @@
 # Script Information
 export TESTCASE="F006_03"
 export TEST_DESCRIPTION="Loading correct parameters"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh

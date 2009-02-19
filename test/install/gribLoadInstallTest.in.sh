@@ -19,7 +19,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 # Setup environment
-source __WDB_BUILDDIR__/test/install/loadingProgram/gribLoad/testEnvironment.sh
+source __WDB_BUILDDIR__/test/install/testEnvironment.sh
 
 # Parse command line
 while test -n "$1"; do
@@ -53,7 +53,7 @@ ERROR_TESTS=0
 # Timing
 startTime=`date +%s%N`
 
-list=`ls __WDB_BUILDDIR__/test/install/loadingProgram/gribLoad/*.test`;
+list=`ls __WDB_BUILDDIR__/test/install/*.test`;
 
 # Count Tests
 for tst in $list; do

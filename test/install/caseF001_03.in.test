@@ -21,7 +21,7 @@
 # Script Information
 export TESTCASE="F001_03"
 export TEST_DESCRIPTION="Verify that duplicates cannot be loaded"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh

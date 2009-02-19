@@ -20,7 +20,7 @@
 # Script Information
 export TESTCASE="F007_01"
 export TEST_DESCRIPTION="Loading fails for field without a matching dataprovider in DB"
-export TEST_PATH=__WDB_BUILDDIR__/test/install/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh
