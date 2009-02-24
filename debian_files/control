@@ -3,11 +3,11 @@ Section: science
 Priority: extra
 Maintainer: Vegard Bønes <wdb@met.no>
 Build-Depends: debhelper (>= 5), autoconf,
- automake1.9, wdb|wdb-psql-8.3, gribapi
+ automake1.9, wdbloaderbase, gribapi
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.7.2
 
 Package: gribload
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, wdb|wdb-psql-8.3
+Depends: ${shlibs:Depends}, ${misc:Depends}, wdbloaderbase
 Description: Load GRIB files into wdb
