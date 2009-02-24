@@ -35,7 +35,7 @@ EXTRA_DIST +=				test/install/gribLoadInstallTest.in.sh \
 							$(GRIBLOADTEST_SOURCES) \
 							$(GRIBLOADTEST_SUPPORT) \
 							test/install/caseF003_01.grib \
-							test/install/wdb.mk \
+							test/install/gribLoad.mk \
 							test/install/Makefile.am \
 							test/install/Makefile.in
 

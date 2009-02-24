@@ -19,7 +19,7 @@ gribWrite_SOURCES =		test/util/gribWrite/main.cpp \
 						test/util/gribWrite/gribPoint.cpp \
 						test/util/gribWrite/gribPoint.h 
 
-EXTRA_DIST +=			test/util/gribWrite/wdb.mk \
+EXTRA_DIST +=			test/util/gribWrite/gribLoad.mk \
 						test/util/gribWrite/Makefile.am \
 						test/util/gribWrite/Makefile.in
 

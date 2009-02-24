@@ -22,7 +22,9 @@ export SCRIPT_USAGE="Usage: $0 [OPTION]
 
 Test Case $TESTCASE
 Description: $TEST_DESCRIPTION
-(See wdb_gribload_system-test-specification for details)
+(The WDB installation variable must have been set up correctly to 
+ indicate the test database prior to the gribLoad installation tests
+ being run. See wdb_gribload_system-test-specification for details)
 
 Options:
 --help             display this help and exit
@@ -33,7 +35,7 @@ Options:
 export SCRIPT_VERSION=__WDB_VERSION__
 
 # Database Setup
-WDB_CONFIG=__WDB_BINDIR__/wdbConfiguration
+WDB_CONFIG=wdbConfiguration
 export PSQL="psql `$WDB_CONFIG --psqlArgs`"
 
 # Paths

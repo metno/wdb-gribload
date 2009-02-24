@@ -24,7 +24,7 @@ wdbUnitTest_LDFLAGS += 		-lwdbProjection
 # HAS_CPPUNIT
 endif
 
-EXTRA_DIST +=				src/loadingProgram/gribLoad/test/wdb.mk \
+EXTRA_DIST +=				src/loadingProgram/gribLoad/test/gribLoad.mk \
 							src/loadingProgram/gribLoad/test/Makefile.am \
 							src/loadingProgram/gribLoad/test/Makefile.in
 
