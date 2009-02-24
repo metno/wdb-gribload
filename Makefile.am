@@ -12,8 +12,10 @@ ACLOCAL_AMFLAGS = 		-I config
 wdbdatadir = 			$(datadir)/wdb
 sqldir = 				$(wdbdatadir)/sql
 
+wdblibdir =				$(libdir)/wdb/
+
 # Setting Targets
-pkglib_PROGRAMS = 		gribLoad
+wdblib_PROGRAMS = 		gribLoad
 
 # This is to be replaced by a "find wdb" macro:
 AM_CXXFLAGS = 			$(wdb_CFLAGS)
