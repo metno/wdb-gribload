@@ -3,8 +3,6 @@
 # WDB GribLoad Component
 #-----------------------------------------------------------------------------
 
-pkglib_PROGRAMS +=		gribLoad
-
 gribLoad_SOURCES =		src/gribLoad.cpp \
 						src/GribDatabaseInterface.h \
 						src/gribDatabaseConnection.cpp \
