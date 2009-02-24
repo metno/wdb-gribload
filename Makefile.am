@@ -17,11 +17,9 @@ pkglib_PROGRAMS = 		gribLoad
 
 # This is to be replaced by a "find wdb" macro:
 AM_CXXFLAGS = 			$(wdb_CFLAGS)
+AM_LDFLAGS = 			$(wdb_LIBS)
 	
 gribLoad_CPPFLAGS =  	-I$(top_srcdir)/src
-												
-gribLoad_LDADD =		-lwdbLoaderBase -lwdbConfiguration -lwdbProjection \
-						-lwdbException -lwdbLogHandler -lwdbMath
 
 SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(WDB_VERSION)/g $<\
 						| sed s¤__WDB_LIB_PATH__¤"$(LD_LIBRARY_PATH)"¤g \
