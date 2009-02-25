@@ -19,16 +19,7 @@ gribWrite_SOURCES =		test/util/gribWrite/main.cpp \
 						test/util/gribWrite/gribPoint.cpp \
 						test/util/gribWrite/gribPoint.h 
 
-EXTRA_DIST +=			test/util/gribWrite/gribLoad.mk \
-						test/util/gribWrite/Makefile.am \
-						test/util/gribWrite/Makefile.in
+EXTRA_DIST +=			test/util/gribWrite/gribLoad.mk
 
-DISTCLEANFILES +=		test/util/gribWrite/Makefile
+include test/util/gribWrite/test/wdb.mk
 
-
-# Local Makefile Targets
-#-----------------------------------------------------------------------------
-
-test/utility/gribWrite/all: gribWrite
-
-test/utility/gribWrite/clean: clean

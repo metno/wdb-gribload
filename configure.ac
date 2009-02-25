@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(gribLoad, 0.8.0, [wdb@met.no])
+AC_INIT(gribLoad, 0.8.0dev, [wdb@met.no])
 # Config
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([config/config.h.in])
@@ -103,8 +103,7 @@ AM_PROG_CC_C_O
 #-----------------------------------------------------------------------------
 
 # Configuration Files
-AC_CONFIG_FILES([Makefile
-				 test/install/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
 # Print Out Summary of Configuration

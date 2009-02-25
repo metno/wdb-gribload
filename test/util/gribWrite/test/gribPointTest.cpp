@@ -27,8 +27,8 @@
 */
 
 
-#include <gribPointTest.h>
-#include <gribPoint.h>
+#include "gribPointTest.h"
+#include "../gribPoint.h"
 #include <stdexcept>
 
 CPPUNIT_TEST_SUITE_REGISTRATION( GribPointTest );

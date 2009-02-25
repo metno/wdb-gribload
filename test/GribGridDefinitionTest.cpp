@@ -27,8 +27,8 @@
  */
 
 #include "GribGridDefinitionTest.h"
-#include "../gribGridDefinition.h"
-#include "../GribHandleReader.h"
+#include <gribGridDefinition.h>
+#include <GribHandleReader.h>
 #include <wdbException.h>
 #include <wdbMath.h>
 #include <proj_api.h>

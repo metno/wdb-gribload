@@ -35,21 +35,12 @@ EXTRA_DIST +=				test/install/gribLoadInstallTest.in.sh \
 							$(GRIBLOADTEST_SOURCES) \
 							$(GRIBLOADTEST_SUPPORT) \
 							test/install/caseF003_01.grib \
-							test/install/gribLoad.mk \
-							test/install/Makefile.am \
-							test/install/Makefile.in
+							test/install/gribLoad.mk 
 
-DISTCLEANFILES +=			test/install/Makefile
+installtestdirectory:
+	mkdir -p test/install
 
-gribLoadInstallTest.sh:		test/install/gribLoadInstallTest.in.sh
+gribLoadInstallTest.sh:		installtestdirectory test/install/gribLoadInstallTest.in.sh
 							$(SED_SUBSTITUTION);\
 							chmod 754 $@
 
-
-
-# Local Makefile Targets
-#-----------------------------------------------------------------------------
-
-test/install/all: $(GRIBLOADTEST_SOURCES:.in.test=.test) $(GRIBLOADTEST_SUPPORT:.in.sh=.sh)
-
-test/install/clean: clean

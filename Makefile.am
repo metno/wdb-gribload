@@ -21,7 +21,7 @@ wdblib_PROGRAMS = 		gribLoad
 AM_CXXFLAGS = 			$(wdb_CFLAGS)
 AM_LDFLAGS = 			$(wdb_LIBS)
 	
-gribLoad_CPPFLAGS =  	-I$(top_srcdir)/src
+AM_CPPFLAGS =  	-I$(top_srcdir)/src
 
 SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(WDB_VERSION)/g $<\
 						| sed s¤__WDB_LIB_PATH__¤"$(LD_LIBRARY_PATH)"¤g \
@@ -89,10 +89,11 @@ EXTRA_DIST =
 INSTALLTESTS =
 CLEANFILES =
 DISTCLEANFILES =
+PERFORMANCETESTS =
 
 include src/gribLoad.mk
-include test/install/gribLoad.mk
-include test/util/gribWrite/gribLoad.mk
+include test/gribLoad.mk
+
 
 
 
@@ -200,6 +201,7 @@ installcheck-local: $(INSTALLTESTS)
 #-----------------------------------------------------------------------------
 # Performance Check Framework
 #-----------------------------------------------------------------------------
+
 
 performancecheck:  $(PERFORMANCETESTS)
 	@failed=0; \

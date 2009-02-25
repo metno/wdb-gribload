@@ -1,4 +1,3 @@
-
 #-----------------------------------------------------------------------------
 # WCI Types Unit Test Framework
 #
@@ -6,32 +5,33 @@
 #-----------------------------------------------------------------------------
 
 if HAS_CPPUNIT
-#GRIBLOAD_LINK_IN_SOURCES = \
-# 						src/loadingProgram/gribLoad/gribGridDefinition.cpp \
-#						src/loadingProgram/gribLoad/gribGridDefinition.h \
-#						src/loadingProgram/gribLoad/GribHandleReader.cpp \
-#						src/loadingProgram/gribLoad/GribHandleReader.h \
-#						src/loadingProgram/gribLoad/wdbSetup.cpp \
-#						src/loadingProgram/gribLoad/wdbSetup.h
 
-#wdbUnitTest_SOURCES += 		src/loadingProgram/gribLoad/test/GribGridDefinitionTest.cpp \
-#							src/loadingProgram/gribLoad/test/GribGridDefinitionTest.h \
-#							src/loadingProgram/gribLoad/test/FakeGribDatabaseInterface.h \
-#							$(GRIBLOAD_LINK_IN_SOURCES)
-							
-    						
-wdbUnitTest_LDFLAGS += 		-lwdbProjection
+TESTS = wdbUnitTest
+
+check_PROGRAMS = wdbUnitTest
+
+GRIBLOAD_LINK_IN_SOURCES = \
+                   src/gribGridDefinition.cpp \
+                   src/gribGridDefinition.h \
+                   src/GribHandleReader.cpp \
+                   src/GribHandleReader.h 
+#                   src/wdbSetup.cpp \
+#                   src/wdbSetup.h
+
+wdbUnitTest_SOURCES =           test/wdbUnitTest.cpp \
+				test/GribGridDefinitionTest.cpp \
+                                test/GribGridDefinitionTest.h \
+                                test/FakeGribDatabaseInterface.h \
+                                $(GRIBLOAD_LINK_IN_SOURCES)
+
+
+wdbUnitTest_LDFLAGS =           $(cppunit_LIBS) -lwdbProjection -ltestConfiguration
 # HAS_CPPUNIT
 endif
 
-EXTRA_DIST +=				src/loadingProgram/gribLoad/test/gribLoad.mk \
-							src/loadingProgram/gribLoad/test/Makefile.am \
-							src/loadingProgram/gribLoad/test/Makefile.in
+EXTRA_DIST +=                           test/gribLoad.mk
 
-DISTCLEANFILES +=			src/loadingProgram/gribLoad/test/Makefile
+include test/install/gribLoad.mk
+include test/performance/wdb.mk
+include test/util/gribLoad.mk
 
-
-# Local Makefile Targets
-#-----------------------------------------------------------------------------
-
-src/loadingProgram/gribLoad/test/clean: clean
