@@ -40,7 +40,8 @@ EXTRA_DIST +=				test/install/gribLoadInstallTest.in.sh \
 installtestdirectory:
 	mkdir -p test/install
 
-gribLoadInstallTest.sh:		installtestdirectory test/install/gribLoadInstallTest.in.sh
+gribLoadInstallTest.sh:		test/install/gribLoadInstallTest.in.sh installtestdirectory
 							$(SED_SUBSTITUTION);\
 							chmod 754 $@
 
+.PHONY = installtestdirectory
