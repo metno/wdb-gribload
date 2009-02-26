@@ -3,6 +3,7 @@
 	<name>gribLoad</name>
 	<comment></comment>
 	<projects>
+		<project>loaderBase</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
