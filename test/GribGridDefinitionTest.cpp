@@ -88,6 +88,8 @@ void GribGridDefinitionTest::setUp()
 	reader->expected["numberOfPointsAlongAMeridian"] = 400;
 	reader->expected["iDirectionIncrementInDegrees"] = 0.1;
 	reader->expected["jDirectionIncrementInDegrees"] = 0.1;
+	reader->expected["iScansNegatively"] = 0;
+	reader->expected["jScansPositively"] = 1;
 	reader->expected["latitudeOfFirstGridPointInDegrees"] = -13.25;
 	reader->expected["longitudeOfFirstGridPointInDegrees"] = 5.75;
 	reader->expected["latitudeOfLastGridPointInDegrees"] = 26.638;
@@ -102,13 +104,12 @@ void GribGridDefinitionTest::setUp()
 	//	reader->expected["iDirectionIncrementInDegrees"] = 0.072;
 	//	reader->expected["jDirectionIncrementInDegrees"] = 0.072;
 
-
 	gridDef = new TestingGribGridDefinition(reader);
 }
 
 void GribGridDefinitionTest::tearDown()
 {
-	delete gridDef;
+	//delete gridDef;
 	// gridDef has taken responisbility for deleting reader
 }
 
