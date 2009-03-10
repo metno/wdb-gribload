@@ -18,6 +18,9 @@
 ##
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
+# Setup environment
+source __WDB_BUILDDIR__/test/performance/testEnvironment.sh
+
 # Help Info
 export SCRIPT_USAGE="Usage: $0 [OPTION]
 
@@ -32,7 +35,7 @@ Options:
 "
 
 export SCRIPT_VERSION=__WDB_VERSION__
-export TEST_PATH=__WDB_BUILDDIR__/test/performance/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/performance
 export TMP_PATH=__WDB_BUILDDIR__/var/tmp
 export TEST_FILE=$TMP_PATH/gribLoadPerformance.grib
 export GRIBWRITE_PATH=__WDB_BUILDDIR__

@@ -21,7 +21,7 @@ wdblib_PROGRAMS = 		gribLoad
 AM_CXXFLAGS = 			$(wdb_CFLAGS)
 AM_LDFLAGS = 			$(wdb_LIBS)
 	
-AM_CPPFLAGS =  	-I$(top_srcdir)/src
+AM_CPPFLAGS =  			-I$(top_srcdir)/src
 
 SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(WDB_VERSION)/g $<\
 						| sed s¤__WDB_LIB_PATH__¤"$(LD_LIBRARY_PATH)"¤g \
@@ -93,7 +93,6 @@ PERFORMANCETESTS =
 
 include src/gribLoad.mk
 include test/gribLoad.mk
-
 
 
 

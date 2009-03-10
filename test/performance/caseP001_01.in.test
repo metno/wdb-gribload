@@ -2,7 +2,7 @@
 # Script Information
 export TESTCASE="P001_01"
 export TEST_DESCRIPTION="Single file, single process"
-export TEST_PATH=__WDB_BUILDDIR__/test/performance/loadingProgram/gribLoad
+export TEST_PATH=__WDB_BUILDDIR__/test/performance
 
 # Test Environment
 source $TEST_PATH/testEnvironment.sh

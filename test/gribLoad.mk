@@ -32,6 +32,6 @@ endif
 EXTRA_DIST +=                           test/gribLoad.mk
 
 include test/install/gribLoad.mk
-include test/performance/wdb.mk
+include test/performance/gribLoad.mk
 include test/util/gribLoad.mk
 
