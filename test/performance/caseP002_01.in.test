@@ -5,7 +5,7 @@ export TEST_DESCRIPTION="single file(s), Parallel loading (4 processes)"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance
 
 # Test Environment
-source $TEST_PATH/testEnvironment.sh
+$TEST_PATH/testEnvironment.sh
 
 # Parse command line
 case $1 in
@@ -22,7 +22,7 @@ rm -f ${TMP_PATH}/startTime.log
 rm -f ${TMP_PATH}/endTime.log
 touch ${TMP_PATH}/startTime.log
 touch ${TMP_PATH}/endTime.log
-source ${TEST_PATH}/tearDown.sh
+${TEST_PATH}/tearDown.sh
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}01 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}02 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}03 &
@@ -30,14 +30,14 @@ ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}04 &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Execute Test 2
 rm ${TMP_PATH}/startTime.log
 rm ${TMP_PATH}/endTime.log
 touch ${TMP_PATH}/startTime.log
 touch ${TMP_PATH}/endTime.log
-source ${TEST_PATH}/tearDown.sh
+${TEST_PATH}/tearDown.sh
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}01 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}02 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}03 &
@@ -45,14 +45,14 @@ ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}04 &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Execute Test 3
 rm ${TMP_PATH}/startTime.log
 rm ${TMP_PATH}/endTime.log
 touch ${TMP_PATH}/startTime.log
 touch ${TMP_PATH}/endTime.log
-source ${TEST_PATH}/tearDown.sh
+${TEST_PATH}/tearDown.sh
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}01 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}02 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}03 &
@@ -60,7 +60,7 @@ ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}04 &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`
-let totalTime=totalTime+endTime-startTime
+totalTime=$(echo "$totalTime + $endTime - $startTime" | bc -l)
 
 # Calculate Performance
 averageTimeLoad=$(echo "$totalTime/3.0" | bc -l)
