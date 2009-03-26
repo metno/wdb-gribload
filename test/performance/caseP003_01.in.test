@@ -82,7 +82,7 @@ averageTimeField=$(echo "288.0*8/$averageTimeLoad" | bc -l)
 echo "File Loaded: $averageTimeLoad seconds"
 echo "Field Loaded: $averageTimeField per second"
 
-source ${TEST_PATH}/tearDown.sh
+${TEST_PATH}/tearDown.sh
 # Exit
 echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 exit 0
