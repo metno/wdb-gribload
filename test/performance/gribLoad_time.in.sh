@@ -19,7 +19,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #!/bin/sh
 
-EXECUTE="__WDB_LIBDIR__/wdb/gribLoad --name $1"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --name $1"
 date +%s >> ${TMP_PATH}/startTime.log
 $EXECUTE
 date +%s >> ${TMP_PATH}/endTime.log
