@@ -46,6 +46,7 @@ for dd in $days
       do
       for timestep in $timesteps
 		do	
+#		${GRIBWRITE_PATH}/gribWrite --parameter $parameter --proff --timeValue 1980-02-"$dd"T"$hh":00:00 --timeUnit 1 --P1 $timestep --P2 0 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 --generatingCentre 1 --generatingProcess 252 -P 100,100=1 ${TEST_FILE}$dd
 		${GRIBWRITE_PATH}/gribWrite --parameter $parameter --hirlam10 --timeValue 1980-02-"$dd"T"$hh":00:00 --timeUnit 1 --P1 $timestep --P2 0 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 --generatingCentre 1 --generatingProcess 252 -P 100,100=1 ${TEST_FILE}$dd
       done
    	done

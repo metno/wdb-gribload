@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script Information
 export TESTCASE="P003_01"
-export TEST_DESCRIPTION="single file(s), Parallel loading (Temp: 2 Processes)
+export TEST_DESCRIPTION="single file(s), Parallel loading (8 processes)
 # (8 processes)"
 export TEST_PATH=__WDB_BUILDDIR__/test/performance
 
@@ -26,12 +26,12 @@ touch ${TMP_PATH}/endTime.log
 ${TEST_PATH}/tearDown.sh
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}01 &
 ${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}02 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}03 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}04 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}05 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}06 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}07 &
-#${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}08 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}03 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}04 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}05 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}06 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}07 &
+${TEST_PATH}/gribLoad_time.sh ${TEST_FILE}08 &
 wait
 startTime=`head -1 ${TMP_PATH}/startTime.log`
 endTime=`tail -1 ${TMP_PATH}/endTime.log`

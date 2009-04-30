@@ -56,7 +56,7 @@ ${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 
 $EXECUTE --logfile $LOGFILE
 
 # Check Result
-if ! $PSQL -Atc "select count(*) from test.oidvalue where dataprovidername='test gribload'" | grep -qE "^0$"
+if ! $PSQL -Atc "select count(*) from test.gridvalue where dataprovidername='test gribload'" | grep -qE "^0$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)

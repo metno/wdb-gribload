@@ -16,7 +16,8 @@ GRIBLOADTEST_SOURCES =		test/install/caseF001_01.in.test \
 							test/install/caseF006_01.in.test \
 							test/install/caseF006_02.in.test \
 							test/install/caseF006_03.in.test \
-							test/install/caseF007_01.in.test 
+							test/install/caseF007_01.in.test \
+							test/install/caseF008_01.in.test 
 
 GRIBLOADTEST_SUPPORT =		test/install/tearDown.in.sh \
 							test/install/testEnvironment.in.sh
