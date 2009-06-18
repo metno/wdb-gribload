@@ -28,7 +28,7 @@
 
 
 /**
- * @addtogroup loadingprogram
+ * @addtogroup loader
  * @{
  * @addtogroup gribload
  * @{
@@ -45,20 +45,19 @@
 #include <config.h>
 #endif
 // PROJECT INCLUDES
-#include <gribField.h>
-#include <gribDatabaseConnection.h>
-//#include <gribLoadConfiguration.h>
+#include "GribLoader.h"
+#include "GribField.h"
 #include <wdb/LoaderConfiguration.h>
 // - Logging
 #include <wdbLogHandler.h>
 // - Exception
 #include <wdbException.h>
 // SYSTEM INCLUDES
-#include <iostream>
-#include <stdlib.h>
 #include <stdio.h>
-#include <sys/time.h>
-#include <unistd.h>
+#include <stdlib.h>
+#include <iostream>
+//#include <sys/time.h>
+//#include <unistd.h>
 #include <vector>
 #include <grib_api.h>
 // - Boost
@@ -67,6 +66,7 @@
 
 using namespace std;
 using namespace wdb;
+using namespace wdb::grib;
 
 /// Standard Scan Mode of the wdb
 static const wmo::codeTable::ScanMode wdbStandardScanMode = wmo::codeTable::LeftUpperHorizontal;
@@ -89,7 +89,7 @@ openGrib( const std::string & fileName )
         ostringstream errorMessage;
         errorMessage << "Could not open the GRIB file " << fileName;
         log.errorStream() << errorMessage.str();
-        throw WdbException(errorMessage.str(), __func__);
+        throw std::runtime_error( errorMessage.str() );
     }
 
     log.debugStream() << "Opened GRIB file successfully";
@@ -104,9 +104,9 @@ openGrib( const std::string & fileName )
  * @param	wdbConnection	Pointer to the Database
  */
 void readGrib( const std::string & fileName,
-			   const LoaderConfiguration & conf,
+			   const wdb::load::LoaderConfiguration & conf,
 			   WdbLogHandler & logHandler,
-               database::GribDatabaseConnection * wdbConnection = 0 )
+               wdb::load::LoaderDatabaseConnection & dbConnection )
 {
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readGrib" );
 
@@ -124,17 +124,16 @@ void readGrib( const std::string & fileName,
         string errorMessage = "End of file was hit before a product was read into file ";
         errorMessage += fileName;
         log.errorStream() << errorMessage;
-        throw WdbException(errorMessage, __func__);
+        throw std::runtime_error( errorMessage );
 	}
 	while ( gribHandle != 0 ) {
 		GRIB_CHECK( errorCode, 0 );
         try {
 			// Create GRIB field
-            GribField gribField( gribHandle, conf.loading().loadPlaceDefinition);
+            GribField gribField( gribHandle );
             // Initialize gribField
-            gribField.initializeData( wdbStandardScanMode );
-            // Store GRIB field in
-            gribField.storeInDatabase( * wdbConnection, conf.output().list );
+            GribLoader loader( dbConnection, conf, logHandler );
+            loader.load( gribField );
         }
         catch (WdbException &e) {
             WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readgrib" );
@@ -190,7 +189,7 @@ void help( const boost::program_options::options_description & options, ostream 
 int
 main(int argc, char **argv)
 {
-	wdb::LoaderConfiguration conf("wdb_grib");
+	wdb::load::LoaderConfiguration conf("wdb_grib");
     try
     {
     	conf.parse( argc, argv );
@@ -235,17 +234,8 @@ main(int argc, char **argv)
     }
 
     // Database Connection
-    database::GribDatabaseConnection * wdbConnection;
     log.debugStream() << "Attempting to connect to database " << conf.pqDatabaseConnection();
-    try
-	{
-		wdbConnection = new database::GribDatabaseConnection(conf.pqDatabaseConnection());
-	}
-	catch ( exception & e )
-	{
-		log.fatalStream() << e.what() << "\nTerminating.";
-		return 2;
-	}
+   	wdb::load::LoaderDatabaseConnection connection( conf.pqDatabaseConnection(), conf.database().user );
     log.debugStream() << "...connected";
 
     for ( std::vector<std::string>::const_iterator file = filesToLoad.begin(); file != filesToLoad.end(); ++ file )
@@ -254,16 +244,14 @@ main(int argc, char **argv)
 			// Open File
 	        logHandler.setObjectName( * file );
 			// Read Fields
-	        readGrib( * file, conf, logHandler, wdbConnection );
+	        readGrib( * file, conf, logHandler, connection );
 	    }
-	    catch (WdbException & e) {
+	    catch ( std::exception & e) {
 	        log.errorStream() << "Unrecoverable error when reading file " << * file << ".";
 	    }
     }
-    delete wdbConnection;
 
     log.debugStream() << "Done";
-
     return 0;
 }
 

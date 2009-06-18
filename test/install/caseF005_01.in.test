@@ -42,7 +42,7 @@ esac
 startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:00)
-EXPECTED_LOG_MESSAGE='Could not identify level parameter.'
+EXPECTED_LOG_MESSAGE='Could not identify the level parameter.'
 EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${TEST_FILE}"
 
 # Clean out database
@@ -53,7 +53,7 @@ rm -f ${TEST_FILE}
 ${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 253 ${TEST_FILE}
 
 #Execute Test 
-$EXECUTE --logfile $LOGFILE --loglevel 1
+$EXECUTE --logfile $LOGFILE
 
 # Check Result
 if ! grep -q -E "$EXPECTED_LOG_MESSAGE" $LOGFILE

@@ -20,7 +20,7 @@
 #!/bin/sh
 # Script Information
 export TESTCASE="F004_03"
-export TEST_DESCRIPTION="Load a field without a placedefinition in the database (force load)"
+export TEST_DESCRIPTION="Force load a field without a placedefinition in the database"
 export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment

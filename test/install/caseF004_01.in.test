@@ -42,7 +42,7 @@ esac
 startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:00)
-EXPECTED_LOG_MESSAGE='Could not load field into database due to missing place definition.'
+EXPECTED_LOG_MESSAGE='Failed to identify a placename.'
 EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
 
 # Clean out database
@@ -70,6 +70,8 @@ then
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
     echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	source ${TEST_PATH}/tearDown.sh
+	$PSQL -q -Atc "select test.insertplacedef()" --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
     exit 1
 fi
 if ! grep -q -E "${EXPECTED_LOG_MESSAGE}" $LOGFILE;
@@ -80,8 +82,10 @@ then
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Did not find expected log message in logs\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (log messages)"
 	fi
+	source ${TEST_PATH}/tearDown.sh
+	$PSQL -q -Atc "select test.insertplacedef()" --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
     exit 1
 fi
 

@@ -42,7 +42,7 @@ esac
 startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:00)
-EXPECTED_LOG_MESSAGE="Could not identify parameter"
+EXPECTED_LOG_MESSAGE="Could not identify the value parameter."
 EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${TEST_FILE}"
 
 # Clean out database

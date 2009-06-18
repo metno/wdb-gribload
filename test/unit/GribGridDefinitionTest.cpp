@@ -27,7 +27,7 @@
  */
 
 #include "GribGridDefinitionTest.h"
-#include <gribGridDefinition.h>
+#include <GribGridDefinition.h>
 #include <GribHandleReader.h>
 #include <wdbException.h>
 #include <wdbMath.h>
@@ -36,20 +36,22 @@
 #include <map>
 #include <stdexcept>
 
+using namespace wdb::grib;
+
 CPPUNIT_TEST_SUITE_REGISTRATION( GribGridDefinitionTest );
 
-class MockGribHandleReader : public GribHandleReaderInterface
+class MockGribHandleReader : public wdb::grib::GribHandleReaderInterface
 {
 public:
 	typedef std::map<std::string, double> Expected;
 	Expected expected;
 
-	virtual long getLong(const char * name, const char * nameOfCallerFunction)
+	virtual long getLong(const char * name)
 	{
-		return (long) getDouble(name, nameOfCallerFunction);
+		return (long) getDouble(name);
 	}
 
-	virtual double getDouble(const char * name, const char * nameOfCallerFunction)
+	virtual double getDouble(const char * name)
 	{
 		Expected::const_iterator it = expected.find(name);
 		if ( it != expected.end() )
@@ -57,12 +59,23 @@ public:
 		std::string errorMsg = "Can't find key: ";
 		throw std::logic_error(errorMsg + name);
 	}
+
+	virtual size_t getValuesSize( )
+	{
+		return 0; // not used
+	}
+
+	virtual double * getValues( )
+	{
+		return NULL; // not used
+	}
+
 };
 
-struct TestingGribGridDefinition : public wdb::GribGridDefinition
+struct TestingGribGridDefinition : public wdb::grib::GribGridDefinition
 {
 	TestingGribGridDefinition(MockGribHandleReader * reader) :
-		wdb::GribGridDefinition(reader)
+		wdb::grib::GribGridDefinition(reader)
 	{}
 };
 
@@ -104,7 +117,7 @@ void GribGridDefinitionTest::setUp()
 	//	reader->expected["iDirectionIncrementInDegrees"] = 0.072;
 	//	reader->expected["jDirectionIncrementInDegrees"] = 0.072;
 
-	gridDef = new TestingGribGridDefinition(reader);
+	gridDef = new TestingGribGridDefinition( reader );
 }
 
 void GribGridDefinitionTest::tearDown()

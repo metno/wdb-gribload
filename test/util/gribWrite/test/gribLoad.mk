@@ -4,15 +4,15 @@
 
 if HAS_CPPUNIT
 
-wdbUnitTest_SOURCES +=  test/util/gribWrite/test/gribPointTest.h \
+gribLoadUnitTest_SOURCES +=  	test/util/gribWrite/test/gribPointTest.h \
                                 test/util/gribWrite/test/gribPointTest.cpp \
                                 test/util/gribWrite/gribPoint.cpp \
                                 test/util/gribWrite/gribPoint.h
 
-wdbUnitTest_LDFLAGS +=  $(gribWrite_LDADD)
+gribLoadUnitTest_LDFLAGS += 	$(gribWrite_LDADD)
 
 # HAS_CPPUNIT
 endif
 
-EXTRA_DIST +=           test/util/gribWrite/test/wdb.mk
+EXTRA_DIST +=           		test/util/gribWrite/test/gribLoad.mk
 

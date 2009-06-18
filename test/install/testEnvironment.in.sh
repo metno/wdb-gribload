@@ -37,6 +37,7 @@ export SCRIPT_VERSION=__WDB_VERSION__
 # Database Setup
 WDB_CONFIG=wdbConfiguration
 export PSQL="psql `$WDB_CONFIG --psqlArgs`"
+export WDB="wdb"
 
 # Paths
 export GRIBLOAD_PATH=__WDB_PKGLIBDIR__

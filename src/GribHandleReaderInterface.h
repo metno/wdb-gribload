@@ -26,8 +26,8 @@
     MA  02110-1301, USA
 */
 
-#ifndef GRIBHANDLEREADER_H_
-#define GRIBHANDLEREADER_H_
+#ifndef GRIBHANDLEREADERINTERFACE_H_
+#define GRIBHANDLEREADERINTERFACE_H_
 
 /**
  * @addtogroup loader
@@ -43,12 +43,7 @@
  * @see GribField
  */
 
-#include "GribHandleReaderInterface.h"
-
-// FORWARD REFERENCES
-class WdbProjection;
-class GridGeometry;
-struct grib_handle;
+#include <stdlib.h>
 
 namespace wdb
 {
@@ -56,48 +51,30 @@ namespace wdb
 namespace grib
 {
 
-/**
- * Wraps reading of grib_handle. This class exists to ease testing of other
- * grib-related classes.
- */
-class GribHandleReader : public GribHandleReaderInterface
+/// Interface for grib_handle wrapper.
+class GribHandleReaderInterface
 {
 public:
-	/** Constructor
-	 * @param	gribHandle		The handle to the GRIB field
-	 */
-	GribHandleReader(grib_handle * gribHandle);
 	/// Destructor
-	virtual ~GribHandleReader();
+	virtual ~GribHandleReaderInterface() {}
 	/** Get a long value from the grib_handle
 	 * @param	name	the attribute in the GRIB field
 	 * @return	value
 	 */
-	virtual long getLong( const char * name );
+	virtual long getLong( const char * name ) =0;
 	/** Get a double value from the grib_handle
 	 * @param	name	the attribute in the GRIB field
 	 * @return	value
 	 */
-	virtual double getDouble( const char * name );
+	virtual double getDouble( const char * name ) =0;
 	/** Get the size of the value grid from the grib_handle
 	 * @return	the size of the value grid in number of doubles
 	 */
-	virtual size_t getValuesSize( );
+	virtual size_t getValuesSize( ) = 0;
 	/** Get the value grid from the grib_handle
 	 * @return	a pointer to an array of doubles
 	 */
-	virtual double * getValues( );
-
-private:
-	/** Check the return code of a GRIB API call for errors
-	 * @param	returnCode		The return code of the GRIB API call
-	 * @param	variable		The variable name that was given the in the GRIB API call
-	 * @throws runtime_error
-	 */
-	void errorCheck( int returnCode, const char * variable );
-
-	/// The GRIB handle
-	grib_handle * gribHandle_;
+	virtual double * getValues( ) = 0;
 };
 
 }
@@ -110,4 +87,4 @@ private:
  * @}
  */
 
-#endif /*GRIBHANDLEREADER_H_*/
+#endif /*GRIBHANDLEREADERINTERFACE_H_*/

@@ -13,12 +13,14 @@ wdbdatadir = 			$(datadir)/wdb
 sqldir = 				$(wdbdatadir)/sql
 
 wdblibdir =				$(libdir)/wdb/
+pkgsysconfdir = 		@sysconfdir@/gribLoad
 
 # Setting Targets
 wdblib_PROGRAMS = 		gribLoad
 
 # This is to be replaced by a "find wdb" macro:
-AM_CXXFLAGS = 			$(wdb_CFLAGS)
+# This is to be replaced by a "find wdb" macro:
+AM_CXXFLAGS =			-DSYSCONFDIR=\"$(pkgsysconfdir)\" $(wdb_CFLAGS)
 AM_LDFLAGS = 			$(wdb_LIBS)
 	
 AM_CPPFLAGS =  			-I$(top_srcdir)/src
@@ -92,7 +94,12 @@ DISTCLEANFILES =
 PERFORMANCETESTS =
 
 include src/gribLoad.mk
-include test/gribLoad.mk
+include etc/gribLoad.mk
+include test/unit/gribLoad.mk
+include test/install/gribLoad.mk
+include test/performance/gribLoad.mk
+include test/util/gribLoad.mk
+
 
 
 

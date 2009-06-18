@@ -21,8 +21,4 @@
 
 mkdir -p __WDB_LOGDIR__
 # Remove Test Data
-$PSQL -q <<EOF
-\o __WDB_LOGDIR__/wdb_test_gribLoad.log
-set role wdb_clean;
-DELETE FROM __WDB_SCHEMA__.gridvalue WHERE dataproviderid >= 0 AND dataproviderid < 100;
-EOF
+$WDB testclean --logfile __WDB_LOGDIR__/gribLoad_testclean.log > __WDB_LOGDIR__/gribLoad_testclean.out 

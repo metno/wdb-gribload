@@ -25,13 +25,13 @@ GRIBLOADTEST_SOURCES =		test/install/caseF001_01.in.test \
 GRIBLOADTEST_SUPPORT =		test/install/tearDown.in.sh \
 							test/install/testEnvironment.in.sh
 
-INSTALLTESTS +=				gribLoadInstallTest.sh
+INSTALLTESTS +=				gribLoadInstallTest
 
-noinst_SCRIPTS +=			gribLoadInstallTest.sh \
+noinst_SCRIPTS +=			gribLoadInstallTest \
 							$(GRIBLOADTEST_SOURCES:.in.test=.test) \
 							$(GRIBLOADTEST_SUPPORT:.in.sh=.sh) 
 
-CLEANFILES +=				gribLoadInstallTest.sh \
+CLEANFILES +=				gribLoadInstallTest \
 							$(GRIBLOADTEST_SOURCES:.in.test=.test) \
 							$(GRIBLOADTEST_SUPPORT:.in.sh=.sh) 
 
@@ -42,9 +42,9 @@ EXTRA_DIST +=				test/install/gribLoadInstallTest.in.sh \
 							test/install/gribLoad.mk 
 
 installtestdirectory:
-	mkdir -p test/install
+							mkdir -p test/install
 
-gribLoadInstallTest.sh:		test/install/gribLoadInstallTest.in.sh installtestdirectory
+gribLoadInstallTest:		test/install/gribLoadInstallTest.in.sh installtestdirectory
 							$(SED_SUBSTITUTION);\
 							chmod 754 $@
 

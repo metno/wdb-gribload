@@ -21,5 +21,5 @@ gribWrite_SOURCES =		test/util/gribWrite/main.cpp \
 
 EXTRA_DIST +=			test/util/gribWrite/gribLoad.mk
 
-include test/util/gribWrite/test/wdb.mk
+include test/util/gribWrite/test/gribLoad.mk
 

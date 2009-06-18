@@ -26,12 +26,11 @@
     MA  02110-1301, USA
 */
 
-
 #ifndef GRIBGRIDDEFINITION_H_
 #define GRIBGRIDDEFINITION_H_
 
 /**
- * @addtogroup loadingprogram
+ * @addtogroup loader
  * @{
  * @addtogroup gribload
  * @{
@@ -45,7 +44,7 @@
  */
 
 // PROJECT INCLUDES
-#include <wmoCodeTables.h>
+//
 
 // SYSTEM INCLUDES
 #include <vector>
@@ -53,19 +52,37 @@
 #include <boost/noncopyable.hpp>
 
 // FORWARD REFERENCES
-//
-class GribHandleReaderInterface;
 struct grib_handle;
 class WdbProjection;
 class GridGeometry;
 
+namespace wmo
+{
+
+namespace codeTable
+{
+
+/// Scan Modes defined in the WMO Code Tables for GRIB
+enum ScanMode
+{
+    LeftUpperHorizontal = 0,
+    // Octal 000 - west to east (left to right), north to south (top to bottom), adjacent i points
+    LeftLowerHorizontal = 64
+    // Octal 100 - west to east (left to right), north to south (top to bottom), adjacent i points
+};
+
+}
+
+}
+
 namespace wdb
 {
-namespace database
+
+namespace grib
 {
-	struct GribDatabaseInterface;
-	class GribDatabaseConnection;
-}
+
+// FORWARD REFERENCES
+class GribHandleReaderInterface;
 
 /**
  * GribGridDefinition encapsulates the grid definition of a GRIB field.
@@ -104,44 +121,48 @@ public:
      */
     void setScanMode( wmo::codeTable::ScanMode mode );
 
-    /**
-     * Return the number of points along a parralel
-     *
-     * @return	the number of I (pointsAlongParralel)
+    // Projection Information
+    /** Return the number of points on the X axis
+     * @return	numberX
      */
-    int getINumber() const;
-
-    /**
-     * Return the number of points along a meridian
-     *
-     * @return	the number of J (pointsAlongMeridian)
+    virtual int numberX() const;
+    /** Return the number of points on the Y axis
+     * @return	numberY
      */
-    int getJNumber() const;
-
+    virtual int numberY() const;
+    /** Return the increment distance between points on the X axis
+     * @return	incrementX
+     */
+    virtual float incrementX() const;
+    /** Return the increment distance between points on the Y axis
+     * @return	incrementY
+     */
+    virtual float incrementY() const;
+    /** Return the starting point on the X axis
+     * @return	startX
+     */
+    virtual float startX() const;
+    /** Return the starting point on the Y axis
+     * @return	startY
+     */
+    virtual float startY() const;
+    /** Return the PROJ definition of the Grid Definition
+     * @return	PROJ.4 string
+     */
+	std::string getProjDefinition();
+	/** Get the Geometry of the GRID
+	 * @return The WKT string
+	 */
     std::string getGeometry() const;
-
-
-    /**
-     * Return the Place Id of the field.
-     * If the PlaceId is not definited in the database, then the function will load a
-     * new Place Definition into the database if the parameter loadPlaceDefinition is
-     * set to true.
-     *
-     * @param	db						reference to the database connection
-     * @param	loadPlaceDefinition		load new placedef flag
-     * @return	the PlaceId (identification key of the place definition in the database)
-     */
-    long int getPlaceId(database::GribDatabaseConnection & db, bool loadPlaceDefinition );
 
 	// INQUIRY
 
 protected:
-	/// Used for testing
+	/// Constructor used for testing
     GribGridDefinition( GribHandleReaderInterface * gribHandleReader );
 
 private:
 
-	std::string getProjDefinition();
 
     /** Sets up the array information for a regular lat/long grid (equidistant cylindrical)
      */
@@ -150,15 +171,17 @@ private:
      */
     std::string rotatedLatLonProjDefinition();
 
-
     /// Perform initial setup of object. Called by all constructors
     void setup();
 
+    /// Grid Geomerty
     GridGeometry * geometry_;
 
     /// Wraps reading of grib_handle (in order to facilitate testing).
     GribHandleReaderInterface * gribHandleReader_;
 };
+
+} // namespace grib
 
 } // namespace wdb
 
