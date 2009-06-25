@@ -23,7 +23,7 @@ gribLoadUnitTest_SOURCES = \
                         $(GRIBLOAD_LINK_IN_SOURCES)
 
 gribLoadUnitTest_LDFLAGS = \
-						$(cppunit_LIBS) -lwdbProjection -ltestConfiguration
+						$(cppunit_LIBS) -lwdbProj -lwdbTest
 # HAS_CPPUNIT
 endif
 

@@ -83,7 +83,7 @@ void GribHandleReader::errorCheck( int returnCode, const char * variable )
 	if (returnCode == 0)
 		return;
 	std::stringstream errorMessage;
-	errorMessage << "Error decoding the variable "
+	errorMessage << "Error while decoding the variable "
 				 << variable
 				 << ". GRIB API: "
 				 << grib_get_error_message( -returnCode ); // GRIB api uses the negative value of return code

@@ -135,7 +135,7 @@ void readGrib( const std::string & fileName,
             GribLoader loader( dbConnection, conf, logHandler );
             loader.load( gribField );
         }
-        catch (WdbException &e) {
+        catch (wdb::wdb_exception &e) {
             WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readgrib" );
             std::ostringstream errorMsg;
             errorMsg << e.what() << ". File: " << fileName << " - Field no #" << fieldNumber;
@@ -247,7 +247,8 @@ main(int argc, char **argv)
 	        readGrib( * file, conf, logHandler, connection );
 	    }
 	    catch ( std::exception & e) {
-	        log.errorStream() << "Unrecoverable error when reading file " << * file << ".";
+	        log.errorStream() << "Unrecoverable error when reading file " << * file << ". "
+							  << e.what();
 	    }
     }
 

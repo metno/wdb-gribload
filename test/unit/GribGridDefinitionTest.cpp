@@ -130,10 +130,10 @@ void GribGridDefinitionTest::testGetGeometry()
 {
 	projPJ hirlam10Proj = pj_init_plus( "+proj=ob_tran +o_proj=longlat +lon_0=-40 +o_lat_p=22 +a=6367470.0 +no_defs" );
 	if ( !hirlam10Proj )
-		throw wdb::WdbException( "Invalid PROJ definition for Hirlam10", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for Hirlam10" );
 	projPJ targetProj = pj_init_plus( "+proj=longlat +ellps=WGS84 +no_defs" );
 	if ( !targetProj )
-		throw wdb::WdbException( "Invalid PROJ definition for target", __func__ );
+		throw std::runtime_error( "Invalid PROJ definition for target" );
 	std::ostringstream exp;
 	double x0 = 5.75 * DEG_TO_RAD;
 	double y0 = -13.25 * DEG_TO_RAD;

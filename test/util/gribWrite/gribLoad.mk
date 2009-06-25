@@ -9,7 +9,7 @@ gribWrite_CPPFLAGS =  	-I$(top_srcdir)/test/util/gribWrite \
 						-I$(top_srcdir)/test/util/gribWrite/test
 												
 gribWrite_LDADD =		-lwdbMath 
-#-lwdbConfiguration -lwdbProjection -lwdbException -lwdbLogHandler
+#-lwdbConfig -lwdbProj -lwdbExcept -lwdbLog
 
 gribWrite_SOURCES =		test/util/gribWrite/main.cpp \
 						test/util/gribWrite/commandLineParser.cpp \
