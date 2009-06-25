@@ -40,7 +40,7 @@ esac
 # Timing
 startTime=`date +%s%N`
 # Prepare Test
-TESTTIME=$(date +%FT12:00)
+TESTTIME=$(date +%FT12:01)
 EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${TEST_FILE}"
 RESFILE="$TMP_PATH/case$TESTCASE.tmp"
 
@@ -82,17 +82,16 @@ fi
 
 
 # Check Result
-if ! $PSQL -q -Atc "select count(*) from test.gridvalue where placeid=1020" | grep -qE "^1$"
+if ! $PSQL -q -Atc "select count(*) from test.gridvalue where placeid=1020 and referencetime = '${TESTTIME} UTC'" | grep -qE "^1$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"An unexpected row was found in the database\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (count is incorrect)"
 	fi
-    echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
-    exit 1
+		    exit 1
 fi
 
 

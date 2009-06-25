@@ -41,7 +41,7 @@ esac
 # Timing
 startTime=`date +%s%N`
 # Prepare Test
-TESTTIME=$(date +%FT12:00:00)
+TESTTIME=$(date +%FT12:01:00)
 EXPECTED_LOG_MESSAGE=''
 EXECUTE="${GRIBLOAD_PATH}/gribLoad  ${TEST_FILE}"
 
@@ -64,7 +64,7 @@ then
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Not exactly one row was inserted\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (Could not find data)"
 	fi
     exit 1
 fi
@@ -76,7 +76,7 @@ then
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"There are error messages in the log\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (errors in log)"
 	fi
     exit 1
 fi
