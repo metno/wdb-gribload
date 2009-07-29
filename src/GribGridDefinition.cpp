@@ -172,13 +172,13 @@ GribGridDefinition::incrementY() const
 float
 GribGridDefinition::startX() const
 {
-	return geometry_->startingLongitude_;
+	return geometry_->startX_;
 };
 
 float
 GribGridDefinition::startY() const
 {
-	return geometry_->startingLatitude_;
+	return geometry_->startY_;
 };
 
 std::string GribGridDefinition::getGeometry() const
