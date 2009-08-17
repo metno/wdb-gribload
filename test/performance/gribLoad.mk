@@ -27,9 +27,7 @@ EXTRA_DIST +=			test/performance/gribLoadPerformanceTest.in.sh \
 						$(GRIBLOADPERFTEST_SUPPORT) \
 						test/performance/gribLoad.mk 
 
-performancetestdirectory:
-						mkdir -p test/performance
-
-gribLoadPerformanceTest:	test/performance/gribLoadPerformanceTest.in.sh performancetestdirectory
-							$(SED_SUBSTITUTION);\
+gribLoadPerformanceTest:	test/performance/gribLoadPerformanceTest.in.sh
+							mkdir -p test/performance
+							$(SED_SUBSTITUTION);
 							chmod 754 $@
