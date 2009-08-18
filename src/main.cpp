@@ -235,7 +235,8 @@ main(int argc, char **argv)
 
     // Database Connection
     log.debugStream() << "Attempting to connect to database " << conf.pqDatabaseConnection();
-   	wdb::load::LoaderDatabaseConnection connection( conf.pqDatabaseConnection(), conf.database().user );
+//   	wdb::load::LoaderDatabaseConnection connection( conf.pqDatabaseConnection(), conf.database().user );
+   	wdb::load::LoaderDatabaseConnection connection( conf );
     log.debugStream() << "...connected";
 
     for ( std::vector<std::string>::const_iterator file = filesToLoad.begin(); file != filesToLoad.end(); ++ file )
