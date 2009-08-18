@@ -189,7 +189,7 @@ void help( const boost::program_options::options_description & options, ostream 
 int
 main(int argc, char **argv)
 {
-	wdb::load::LoaderConfiguration conf("wdb_grib");
+	wdb::load::LoaderConfiguration conf;
     try
     {
     	conf.parse( argc, argv );
