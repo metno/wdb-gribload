@@ -2,13 +2,12 @@ Source: gribload
 Section: science
 Priority: extra
 Maintainer: Vegard Bønes <wdb@met.no>
-Build-Depends: debhelper (>= 5), autoconf,
- automake1.9, wdbloaderbase, gribapi
+Build-Depends: debhelper (>= 5), autotools-dev, libwdbload1, gribapi
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.7.2
 
 Package: gribload
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, wdbloaderbase
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwdbload1
 Description: Load GRIB files into wdb
  Read GRIB files and store them into a wdb database.
