@@ -130,7 +130,7 @@ private:
 	/**
 	 * Convert the values_ depending on the value parameter unit
 	 */
-    void convertValues( const GribField & field, double * values );
+    void convertValues( const GribField & field, std::vector<double> & valuesInOut );
 
 private:
 	/// The Database Connection

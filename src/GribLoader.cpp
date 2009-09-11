@@ -89,7 +89,7 @@ void GribLoader::load( GribField & field )
 	    std::string valueParameter = valueParameterName( field );
 	    std::vector<wdb::load::Level> levels;
 	    levelValues( levels, field );
-	    double * data = field.getValues( );
+	    const double * data = field.getValues( );
 	    if ( loadingConfiguration_.output().list ) {
 	    	cout << field.getValuesSize() << "floating points, "
 				 << dataProvider << ", "
@@ -106,10 +106,11 @@ void GribLoader::load( GribField & field )
 
 	    }
 	    else {
-	    	convertValues( field, data );
+	    	std::vector<double> grid(data, data + field.getValuesSize());
+	    	convertValues( field, grid );
 			for ( unsigned int i = 0; i<levels.size(); i++ ) {
-				connection_.write ( data,
-									field.getValuesSize( ),
+				connection_.write ( &grid[0],
+									grid.size(),
 									dataProvider,
 									place,
 									field.getReferenceTime( ),
@@ -321,19 +322,47 @@ int GribLoader::confidenceCode( const GribField & field )
 		return 0; // Default
 }
 
+namespace
+{
+struct value_convert : std::unary_function<double, double>
+{
+	double coeff_;
+	double term_;
+
+	value_convert(double coeff, double term) :
+		coeff_(coeff),
+		term_(term)
+	{}
+
+	double operator () (double val) const
+	{
+		return ((val * coeff_) + term_);
+	}
+};
+}
+
+
 void
-GribLoader::convertValues( const GribField & field, double * values )
+GribLoader::convertValues( const GribField & field, std::vector<double> & valuesInOut )
 {
     std::string valueUnit = valueParameterUnit( field );
 	float coeff = 1.0;
 	float term = 0.0;
 	connection_.readUnit( valueUnit, &coeff, &term );
-    // Scale the data
-    if (( coeff != 1.0 ) or ( term != 0.0)) {
-    	for ( unsigned int i=0; i< field.getValuesSize(); i++ ) {
-    		values[i] = ( ( values[i] * coeff ) + term );
-    	}
-    }
+
+	try
+	{
+		double gribMissing = field.getMissingValue();
+		double wdbMissing = connection_.getUndefinedValue();
+		std::replace(valuesInOut.begin(), valuesInOut.end(), gribMissing, wdbMissing);
+	}
+	catch ( std::exception & )
+	{
+		WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
+		log.warn("Unable to find key for missing GRIB value");
+	}
+
+	std::transform(valuesInOut.begin(), valuesInOut.end(), valuesInOut.begin(), value_convert(coeff, term));
 }
 
 }

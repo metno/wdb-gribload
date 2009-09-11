@@ -357,7 +357,7 @@ GribField::getProjDefinition()
 
 
 // Get grid values
-double *
+const double *
 GribField::getValues( )
 {
 	return values_;
@@ -368,6 +368,12 @@ GribField::getValuesSize() const
 {
 	return sizeOfValues_;
 }
+
+double GribField::getMissingValue() const
+{
+	return gribHandleReader_->getDouble("missingValue");
+}
+
 
 void
 GribField::retrieveValues()

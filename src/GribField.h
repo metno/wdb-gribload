@@ -89,11 +89,17 @@ public:
     /** Get grid values
      *  @return		A double array containing the data grid
      */
-    double * getValues( );
+    const double * getValues( );
     /** Get size of the data grid
      *  @return		The size of the data grid
      */
     size_t getValuesSize() const;
+
+    /**
+     * Get the special code for a "missing" value
+     */
+    double getMissingValue() const;
+
     /** Generating center of the field
      * @return		The GRIB generating center
      */
