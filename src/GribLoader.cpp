@@ -182,11 +182,11 @@ std::string GribLoader::placeName(GribField & field)
 			placeName = "GribLoad AutoInsert ";
 			ptime now = second_clock::local_time();
 			placeName += to_iso_extended_string( now );
-			connection_.addPlaceDefinition( placeName,
-											field.numberX(), field.numberY(),
-											field.incrementX(), field.incrementY(),
-											field.startX(), field.startY(),
-											field.getProjDefinition() );
+			placeName = connection_.addPlaceDefinition( placeName,
+														field.numberX(), field.numberY(),
+														field.incrementX(), field.incrementY(),
+														field.startX(), field.startY(),
+														field.getProjDefinition() );
 			log.debugStream() << "Insertion of placeName '" << placeName << "' succeeded";
 		}
 		else {
