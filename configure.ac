@@ -61,9 +61,10 @@ VL_LIB_READLINE
 # Module Checks
 #-----------------------------------------------------------------------------
 
-# wdb
-WDB_DATABASE_NAME
-WDB_LOADERBASE_CHECK
+# WDBLOAD
+PKG_CHECK_MODULES( [wdbload], [libwdbLoad] )
+CPPFLAGS="$CPPFLAGS $wdbload_CPPFLAGS"
+LDFLAGSS="$LDFLAGS $wdbload_LDFLAGS"
 
 # PQXX
 WDB_PQXX_CHECK(2.6.8)

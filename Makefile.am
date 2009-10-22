@@ -19,9 +19,9 @@ pkgsysconfdir = 		@sysconfdir@/gribLoad
 wdblib_PROGRAMS = 		gribLoad
 
 # This is to be replaced by a "find wdb" macro:
-# This is to be replaced by a "find wdb" macro:
 AM_CXXFLAGS =			-DSYSCONFDIR=\"$(pkgsysconfdir)\" $(wdb_CFLAGS)
-AM_LDFLAGS = 			$(wdb_LIBS)
+AM_LDFLAGS = 			$(wdb_LIBS) \
+						-lwdbLoad -lwdbConfig -lwdbProj -lwdbExcept -lwdbLog -lwdbMath
 	
 AM_CPPFLAGS =  			-I$(top_srcdir)/src
 
@@ -99,7 +99,7 @@ include test/unit/gribLoad.mk
 include test/install/gribLoad.mk
 include test/performance/gribLoad.mk
 include test/util/gribLoad.mk
-
+include test/util/configuration/gribLoad.mk
 
 
 
