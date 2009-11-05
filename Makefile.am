@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------------
 
 # Scanned by Autoreconf; must be static (no expansion)
-ACLOCAL_AMFLAGS = 		-I config
+ACLOCAL_AMFLAGS = 		-I m4
 				
 # Share directory organization
 wdbdatadir = 			$(datadir)/wdb
@@ -288,5 +288,5 @@ performancecheck:  $(PERFORMANCETESTS)
 	else :; \
 	fi
 
-include config/debian.mk
+include mk/debian.mk
 
