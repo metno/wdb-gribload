@@ -89,7 +89,7 @@ WDB_PROJ_CHECK
 # CPPUNIT
 WDB_CPPUNIT
 
-
+WDB_TEST_CHECK
 
 #-----------------------------------------------------------------------------
 # documentation
