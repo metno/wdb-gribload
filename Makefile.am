@@ -43,6 +43,7 @@ SED_SUBSTITUTION = 		sed s/__WDB_VERSION__/$(WDB_VERSION)/g $<\
 						| sed s:__WCI_SCHEMA__:wci_$(DATABASE_SCHEMA):g \
 						| sed s:__WCI_LIB__:wci-$(WDB_VERSION).so:g \
 						| sed s:__WDB_CONFIG__:$(wdb_CONFIG):g \
+						| sed s:__WDB_ADMIN__:$(wdb_ADMIN):g \
 			 			> $@
 
 CRON_COMPILE =			$(SED_SUBSTITUTION);\

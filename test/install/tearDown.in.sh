@@ -21,4 +21,4 @@
 
 mkdir -p __WDB_LOGDIR__
 # Remove Test Data
-$WDB testclean --logfile __WDB_LOGDIR__/gribLoad_testclean.log > __WDB_LOGDIR__/gribLoad_testclean.out 
+__WDB_ADMIN__ testclean --logfile __WDB_LOGDIR__/gribLoad_testclean.log > __WDB_LOGDIR__/gribLoad_testclean.out 
