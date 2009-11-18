@@ -209,7 +209,7 @@ wmo::codeTable::ScanMode GribGridDefinition::getScanMode() const
 	throw std::runtime_error( errMsg.str() );
 }
 
-std::string GribGridDefinition::getProjDefinition()
+std::string GribGridDefinition::getProjDefinition() const
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.griddefinition" );
 
@@ -228,7 +228,7 @@ std::string GribGridDefinition::getProjDefinition()
 
 
 std::string
-GribGridDefinition::regularLatLonProjDefinition()
+GribGridDefinition::regularLatLonProjDefinition() const
 {
     // Define the PROJ definitions of the calculations
     std::ostringstream srcProjDef;
@@ -252,7 +252,7 @@ GribGridDefinition::regularLatLonProjDefinition()
 }
 
 std::string
-GribGridDefinition::rotatedLatLonProjDefinition()
+GribGridDefinition::rotatedLatLonProjDefinition() const
 {
     // Define the PROJ definitions used for the computation of the
     // Rotated projection

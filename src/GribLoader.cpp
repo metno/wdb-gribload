@@ -30,6 +30,7 @@
 #include <config.h>
 #endif
 #include "GribLoader.h"
+#include "GribFile.h"
 #include "GribField.h"
 #include <wdbException.h>
 #include <wdbLogHandler.h>
@@ -80,8 +81,57 @@ GribLoader::~GribLoader()
 	// NOOP
 }
 
-void GribLoader::load( GribField & field )
+int GribLoader::load( GribFile & gribFile )
 {
+	{
+	    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.load" );
+
+	    // Get first field, and check if it exists
+	    wdb::grib::GribFile::Field gribField = gribFile.next();
+	    if ( ! gribField )
+	    {
+			// If the file is empty, we need to throw an error (Test Case 2)
+	        std::string errorMessage = "End of file was hit before a product was read into file ";
+	        errorMessage += gribFile.fileName();
+	        throw std::runtime_error( errorMessage );
+		}
+
+		// Field Number Count, for logging
+	    int fieldNumber = -1;
+
+	    int failCount = 0;
+
+	    // The actual loading
+	    for ( ; gribField; gribField = gribFile.next() )
+	    {
+	        try
+	        {
+	            load( * gribField, ++ fieldNumber );
+	        }
+	        catch (wdb::wdb_exception & e)
+	        {
+	        	++ failCount;
+
+	        	// We don't stop loading on errors. Merely log the error, and go to the next field
+	            WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readgrib" );
+	            std::ostringstream errorMsg;
+	            errorMsg << e.what() << ". File: " << gribFile.fileName() << " - Field no #" << fieldNumber;
+	            log.warnStream() << errorMsg.str();
+	        }
+		}
+
+	    log.debugStream() << "End of Grib File";
+
+	    // Return the count of fields that we were unable to load into wdb
+	    return failCount;
+	}
+}
+
+
+void GribLoader::load( const GribField & field, int fieldNumber )
+{
+    logHandler_.setObjectNumber( fieldNumber );
+
 	try
 	{
 	    std::string dataProvider = dataProviderName( field );
@@ -148,7 +198,7 @@ void GribLoader::load( GribField & field )
 	}
 }
 
-std::string GribLoader::dataProviderName(const GribField & field)
+std::string GribLoader::dataProviderName(const GribField & field) const
 {
 	stringstream keyStr;
 	keyStr << field.getGeneratingCenter() << ", "
@@ -164,7 +214,7 @@ std::string GribLoader::dataProviderName(const GribField & field)
 	}
 }
 
-std::string GribLoader::placeName(GribField & field)
+std::string GribLoader::placeName(const GribField & field) const
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
 	std::string placeName;
@@ -196,7 +246,7 @@ std::string GribLoader::placeName(GribField & field)
 	return placeName;
 }
 
-std::string GribLoader::valueParameterName(const GribField & field)
+std::string GribLoader::valueParameterName(const GribField & field) const
 {
 	stringstream keyStr;
 	keyStr << field.getGeneratingCenter() << ", "
@@ -219,7 +269,7 @@ std::string GribLoader::valueParameterName(const GribField & field)
 	return ret;
 }
 
-std::string GribLoader::valueParameterUnit(const GribField & field)
+std::string GribLoader::valueParameterUnit(const GribField & field) const
 {
 	stringstream keyStr;
 	keyStr << field.getGeneratingCenter() << ", "
@@ -242,7 +292,7 @@ std::string GribLoader::valueParameterUnit(const GribField & field)
 	return ret;
 }
 
-void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const GribField & field )
+void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const GribField & field ) const
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
 	bool ignored = false;
@@ -312,12 +362,12 @@ void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const Grib
 	}
 }
 
-int GribLoader::dataVersion( const GribField & field )
+int GribLoader::dataVersion( const GribField & field ) const
 {
 		return field.getDataVersion();
 }
 
-int GribLoader::confidenceCode( const GribField & field )
+int GribLoader::confidenceCode( const GribField & field ) const
 {
 		return 0; // Default
 }
@@ -343,7 +393,7 @@ struct value_convert : std::unary_function<double, double>
 
 
 void
-GribLoader::convertValues( const GribField & field, std::vector<double> & valuesInOut )
+GribLoader::convertValues( const GribField & field, std::vector<double> & valuesInOut ) const
 {
     std::string valueUnit = valueParameterUnit( field );
 	float coeff = 1.0;

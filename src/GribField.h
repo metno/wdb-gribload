@@ -89,7 +89,7 @@ public:
     /** Get grid values
      *  @return		A double array containing the data grid
      */
-    const double * getValues( );
+    const double * getValues( ) const;
     /** Get size of the data grid
      *  @return		The size of the data grid
      */
@@ -110,19 +110,34 @@ public:
     long int getGeneratingProcess() const;
     /**
      * Return the Reference Time of the field
+     *
+     * @warning Do not call getValidTimeFrom() or getValidTimeTo() before you
+     *          have called getReferenceTime() at least once. That will
+     *          trigger a caching bug
+     *
      * @return ReferenceTime
      */
-    std::string getReferenceTime();
+    std::string getReferenceTime() const;
     /**
      * Return the Valid Time From of the field
+     *
+     * @warning Do not call getValidTimeFrom() or getValidTimeTo() before you
+     *          have called getReferenceTime() at least once. That will
+     *          trigger a caching bug
+     *
      * @return ValidTimeFrom
      */
-    std::string getValidTimeFrom();
+    std::string getValidTimeFrom() const;
     /**
      * Return the Valid Time To of the field
+     *
+     * @warning Do not call getValidTimeFrom() or getValidTimeTo() before you
+     *          have called getReferenceTime() at least once. That will
+     *          trigger a caching bug
+     *
      * @return ValidTimeTo
      */
-    std::string getValidTimeTo();
+    std::string getValidTimeTo() const;
     /** GRIB Code Table 2 version used
      * @return The WMO Code Table 2number
      */
@@ -183,7 +198,7 @@ public:
     /** Return the PROJ definition of the Grid Definition
      * @return	PROJ.4 string
      */
-	std::string getProjDefinition();
+	std::string getProjDefinition() const;
 
 // INQUIRY
     // NOOP
@@ -198,8 +213,9 @@ private:
     size_t sizeOfValues_;
     /// The GRID definition of the GRIB field
     GribGridDefinition grid_;
-    /// Used for calculations
-    boost::posix_time::ptime referenceTime_;
+
+    /// Used for calculations, just a cached value of the referenceTime() method
+    mutable boost::posix_time::ptime referenceTime_;
 
 
 // PRIVATE METHODS

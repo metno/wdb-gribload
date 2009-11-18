@@ -149,7 +149,7 @@ public:
     /** Return the PROJ definition of the Grid Definition
      * @return	PROJ.4 string
      */
-	std::string getProjDefinition();
+	std::string getProjDefinition() const;
 	/** Get the Geometry of the GRID
 	 * @return The WKT string
 	 */
@@ -166,10 +166,10 @@ private:
 
     /** Sets up the array information for a regular lat/long grid (equidistant cylindrical)
      */
-    std::string regularLatLonProjDefinition();
+    std::string regularLatLonProjDefinition() const;
     /** Sets up the array information for a rotated lat/long grid (equidistant cylindrical)
      */
-    std::string rotatedLatLonProjDefinition();
+    std::string rotatedLatLonProjDefinition() const;
 
     /// Perform initial setup of object. Called by all constructors
     void setup();

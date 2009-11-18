@@ -61,6 +61,7 @@ namespace grib
 {
 
 // FORWARD REFERENCES
+class GribFile;
 class GribField;
 
 /**
@@ -84,53 +85,65 @@ public:
 				wdb::WdbLogHandler & logHandler );
 	/// Destructor
 	~GribLoader( );
+
+	/**
+	 * Load an entire GRIB file into wdb. This function will not fail if there
+	 * are errors in the provided file. Instead an error count will be returned
+	 *
+	 * @throw exception if the given file was empty
+	 * @param gribFile the file to load into a wdb database
+	 * @return the number of inserts that _failed_
+	 */
+	int load( GribFile & gribFile );
+
 	/** Load a given GRIB field into the database
 	 * @param	field		The GRIB field to be loaded
 	 */
-	void load( GribField & field );
+	void load( const GribField & field, int fieldNumber = 0 );
 
 private:
+
 	/** Retrieve the data provider name of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	std::string dataProviderName( const GribField & field );
+	std::string dataProviderName( const GribField & field ) const;
 	/** Retrieve the place name of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	std::string placeName( GribField & field );
+	std::string placeName( const GribField & field ) const;
 	/** Retrieve the value parameter name of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	std::string valueParameterName( const GribField & field );
+	std::string valueParameterName( const GribField & field ) const;
 	/** Retrieve the value parameter unit of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	std::string valueParameterUnit( const GribField & field );
+	std::string valueParameterUnit( const GribField & field ) const;
 	/** Retrieve the list of levels in he GRIB field
 	 *  Unlike with parameters, we can encode more than one level
 	 *  into a field.
 	 * @param	levels	The levels of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 */
-	void levelValues( std::vector<wdb::load::Level> & levels, const GribField & field );
+	void levelValues( std::vector<wdb::load::Level> & levels, const GribField & field ) const;
 	/** Retrieve the data version of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	int dataVersion(const GribField & field);
+	int dataVersion(const GribField & field) const;
 	/** Retrieve the confidence code of the GRIB field
 	 * @param	field	The GRIB field to be loaded
 	 * @returns			The metadata string
 	 */
-	int confidenceCode(const GribField & field);
+	int confidenceCode(const GribField & field) const;
 	/**
 	 * Convert the values_ depending on the value parameter unit
 	 */
-    void convertValues( const GribField & field, std::vector<double> & valuesInOut );
+    void convertValues( const GribField & field, std::vector<double> & valuesInOut ) const;
 
 private:
 	/// The Database Connection

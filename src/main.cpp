@@ -45,22 +45,18 @@
 #include <config.h>
 #endif
 // PROJECT INCLUDES
+#include "GribFile.h"
 #include "GribLoader.h"
-#include "GribField.h"
-#include <wdb/LoaderConfiguration.h>
-// - Logging
-#include <wdbLogHandler.h>
-// - Exception
+
 #include <wdbException.h>
+#include <wdb/LoaderDatabaseConnection.h>
+#include <wdb/LoaderConfiguration.h>
+#include <wdbLogHandler.h>
 // SYSTEM INCLUDES
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-//#include <sys/time.h>
-//#include <unistd.h>
 #include <vector>
-#include <grib_api.h>
-// - Boost
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem/operations.hpp>
 
@@ -68,93 +64,10 @@ using namespace std;
 using namespace wdb;
 using namespace wdb::grib;
 
-/// Standard Scan Mode of the wdb
-static const wmo::codeTable::ScanMode wdbStandardScanMode = wmo::codeTable::LeftUpperHorizontal;
-
-/**
- * Open a Grib File
- * @param	fileName	Filename of the GRIB file to open
- */
-FILE *
-openGrib( const std::string & fileName )
-{
-    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.openGrib" );
-    log.debugStream() << "Attempting to open GRIB file " << fileName;
-
- 	FILE * pGribFile = 0;
- 	grib_multi_support_on(0);
-    const char * gribMode = "r";  // Set to 'r' for reading
-	pGribFile = fopen( fileName.c_str(), gribMode );
-    if ( ! pGribFile ) {
-        ostringstream errorMessage;
-        errorMessage << "Could not open the GRIB file " << fileName;
-        log.errorStream() << errorMessage.str();
-        throw std::runtime_error( errorMessage.str() );
-    }
-
-    log.debugStream() << "Opened GRIB file successfully";
-    return pGribFile;
-}
-
-/**
- * Read a Grib Field from File
- * @param	pGribFile		Pointer to the GRIB file
- * @param	conf			Configuration of the GRIB loader
- * @param	logHandler		Pointer to the Loghandler
- * @param	wdbConnection	Pointer to the Database
- */
-void readGrib( const std::string & fileName,
-			   const wdb::load::LoaderConfiguration & conf,
-			   WdbLogHandler & logHandler,
-               wdb::load::LoaderDatabaseConnection & dbConnection )
-{
-    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readGrib" );
-
-    log.debugStream() << "Reading file " << fileName;
-    // Grib Handle
-    grib_handle * gribHandle;
-	// Field Number Count
-    int fieldNumber = 0;
-    int errorCode = 0;
-
-    FILE * pGribFile = openGrib( fileName );
-	gribHandle = grib_handle_new_from_file( 0, pGribFile, &errorCode );
-	if (gribHandle == 0) {
-		// If the file is empty, we need to throw an error (Test Case 2)
-        string errorMessage = "End of file was hit before a product was read into file ";
-        errorMessage += fileName;
-        log.errorStream() << errorMessage;
-        throw std::runtime_error( errorMessage );
-	}
-	while ( gribHandle != 0 ) {
-		GRIB_CHECK( errorCode, 0 );
-        try {
-			// Create GRIB field
-            GribField gribField( gribHandle );
-            // Initialize gribField
-            GribLoader loader( dbConnection, conf, logHandler );
-            loader.load( gribField );
-        }
-        catch (wdb::wdb_exception &e) {
-            WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readgrib" );
-            std::ostringstream errorMsg;
-            errorMsg << e.what() << ". File: " << fileName << " - Field no #" << fieldNumber;
-            log.warnStream() << errorMsg.str();
-        }
-        // Increment Field Number
-        logHandler.setObjectNumber( ++ fieldNumber );
-        // Iterate on gribFile
-        gribHandle = grib_handle_new_from_file( 0, pGribFile, &errorCode ); // will be deleted by GribField class
-	}
-	fclose(pGribFile);
-
-    log.debugStream() << "End of Grib File";
-}
 
 // Support Functions
 namespace
 {
-
 /**
  * Write the program version to stream
  * @param	out		Stream to write to
@@ -239,13 +152,15 @@ main(int argc, char **argv)
    	wdb::load::LoaderDatabaseConnection connection( conf );
     log.debugStream() << "...connected";
 
+    GribLoader loader( connection, conf, logHandler );
+
     for ( std::vector<std::string>::const_iterator file = filesToLoad.begin(); file != filesToLoad.end(); ++ file )
     {
+        logHandler.setObjectName( * file );
 	    try {
-			// Open File
-	        logHandler.setObjectName( * file );
-			// Read Fields
-	        readGrib( * file, conf, logHandler, connection );
+	    	GribFile gribFile(* file);
+
+	    	loader.load(gribFile);
 	    }
 	    catch ( std::exception & e) {
 	        log.errorStream() << "Unrecoverable error when reading file " << * file << ". "

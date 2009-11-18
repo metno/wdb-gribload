@@ -165,7 +165,7 @@ GribField::getGeneratingProcess() const
 }
 
 string
-GribField::getReferenceTime()
+GribField::getReferenceTime() const
 {
 	long int century =  gribHandleReader_->getLong( "centuryOfReferenceTimeOfData" );
 	long int year = gribHandleReader_->getLong( "yearOfCentury" );
@@ -185,7 +185,7 @@ GribField::getReferenceTime()
 }
 
 string
-GribField::getValidTimeFrom()
+GribField::getValidTimeFrom() const
 {
 	getReferenceTime();
 	ptime validTimeF;
@@ -216,7 +216,7 @@ GribField::getValidTimeFrom()
 }
 
 string
-GribField::getValidTimeTo()
+GribField::getValidTimeTo() const
 {
 	getReferenceTime();
     ptime validTimeT;
@@ -349,7 +349,7 @@ GribField::startY() const
 };
 
 std::string
-GribField::getProjDefinition()
+GribField::getProjDefinition() const
 {
 	return grid_.getProjDefinition();
 }
@@ -358,7 +358,7 @@ GribField::getProjDefinition()
 
 // Get grid values
 const double *
-GribField::getValues( )
+GribField::getValues( ) const
 {
 	return values_;
 }
