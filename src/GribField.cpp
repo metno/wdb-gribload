@@ -119,17 +119,30 @@ const wmo::codeTable::ScanMode wdbStandardScanMode = LeftLowerHorizontal;
 GribField::GribField( grib_handle * gribHandle )
         : values_(0)
         , sizeOfValues_(0)
-        , grid_( gribHandle )
 {
 	gribHandleReader_ = new GribHandleReader( gribHandle );
+    grid_ = new GribGridDefinition( * gribHandleReader_ );
+
 	initializeData( wdbStandardScanMode );
 }
+
+GribField::GribField( GribHandleReaderInterface * gribHandleReader ) :
+		values_(0),
+		sizeOfValues_(0),
+		gribHandleReader_(gribHandleReader)
+{
+    grid_ = new GribGridDefinition( * gribHandleReader_ );
+	initializeData( wdbStandardScanMode );
+}
+
+
 
 // Destructor
 GribField::~GribField()
 {
 	if (values_ != 0)
 		delete [] values_;
+	delete grid_;
 	delete gribHandleReader_;
 }
 
@@ -315,43 +328,43 @@ GribField::getDataVersion() const
 int
 GribField::numberX() const
 {
-    return grid_.numberX();
+    return grid_->numberX();
 };
 
 int
 GribField::numberY() const
 {
-    return grid_.numberY();
+    return grid_->numberY();
 };
 
 float
 GribField::incrementX() const
 {
-	return grid_.incrementX();
+	return grid_->incrementX();
 };
 
 float
 GribField::incrementY() const
 {
-	return grid_.incrementY();
+	return grid_->incrementY();
 };
 
 float
 GribField::startX() const
 {
-	return grid_.startX();
+	return grid_->startX();
 };
 
 float
 GribField::startY() const
 {
-	return grid_.startY();
+	return grid_->startY();
 };
 
 std::string
 GribField::getProjDefinition() const
 {
-	return grid_.getProjDefinition();
+	return grid_->getProjDefinition();
 }
 
 
@@ -387,7 +400,7 @@ GribField::retrieveValues()
     	log.errorStream() << errorMessage;
     	throw std::runtime_error( errorMessage );
     }
-    unsigned int gridSize = (grid_.numberX() * grid_.numberY());
+    unsigned int gridSize = (grid_->numberX() * grid_->numberY());
     if ( sizeOfValues_ != gridSize ) {
     	string errorMessage = "Size of value grid is inconsistent with definition";
     	throw std::runtime_error( errorMessage );
@@ -398,9 +411,9 @@ void
 GribField::gridToLeftUpperHorizontal( )
 {
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
-	wmo::codeTable::ScanMode fromMode = grid_.getScanMode();
-    int nI = grid_.numberX();
-    int nJ = grid_.numberY();
+	wmo::codeTable::ScanMode fromMode = grid_->getScanMode();
+    int nI = grid_->numberX();
+    int nJ = grid_->numberY();
 
     switch( fromMode )
     {
@@ -415,7 +428,7 @@ GribField::gridToLeftUpperHorizontal( )
                     swap( values_[((nJ - j) * nI) + i], values_[((j - 1) * nI) + i] );
                 }
             }
-            grid_.setScanMode( LeftUpperHorizontal );
+            grid_->setScanMode( LeftUpperHorizontal );
             break;
         default:
             throw std::runtime_error( "Unsupported field conversion in gridToLeftUpperHorizontal");
@@ -426,10 +439,10 @@ void
 GribField::gridToLeftLowerHorizontal( )
 {
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
-	wmo::codeTable::ScanMode fromMode = grid_.getScanMode();
+	wmo::codeTable::ScanMode fromMode = grid_->getScanMode();
 
-    int nI = grid_.numberX();
-    int nJ = grid_.numberY();
+    int nI = grid_->numberX();
+    int nJ = grid_->numberY();
 
     switch( fromMode )
     {
@@ -440,7 +453,7 @@ GribField::gridToLeftLowerHorizontal( )
                     swap( values_[((nJ - j) * nI) + i], values_[((j - 1) * nI) + i] );
                 }
             }
-            grid_.setScanMode( LeftLowerHorizontal );
+            grid_->setScanMode( LeftLowerHorizontal );
             break;
         case LeftLowerHorizontal:
             log.debugStream() << "Grid was already in requested format";

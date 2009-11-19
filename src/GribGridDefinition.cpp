@@ -89,23 +89,23 @@ void GribGridDefinition::setup()
 {
     std::string sridProj = getProjDefinition();
 
-    wmo::codeTable::ScanMode scanMode = (wmo::codeTable::ScanMode) gribHandleReader_->getLong("scanningMode");
+    wmo::codeTable::ScanMode scanMode = (wmo::codeTable::ScanMode) gribHandleReader_.getLong("scanningMode");
     Wmo2InternalScanMode::const_iterator f = orientation.find(scanMode);
     if ( f == orientation.end() )
     	throw std::runtime_error("Unrecognized scan mode");
     GridGeometry::Orientation o = f->second;
-	long iNumber = gribHandleReader_->getLong("numberOfPointsAlongAParallel");
-	long jNumber = gribHandleReader_->getLong("numberOfPointsAlongAMeridian");
-	double iIncrement = gribHandleReader_->getDouble("iDirectionIncrementInDegrees");// * DEG_TO_RAD;
-	if ( gribHandleReader_->getLong("iScansNegatively") )
+	long iNumber = gribHandleReader_.getLong("numberOfPointsAlongAParallel");
+	long jNumber = gribHandleReader_.getLong("numberOfPointsAlongAMeridian");
+	double iIncrement = gribHandleReader_.getDouble("iDirectionIncrementInDegrees");// * DEG_TO_RAD;
+	if ( gribHandleReader_.getLong("iScansNegatively") )
 		iIncrement *= -1;
 
-	double jIncrement = gribHandleReader_->getDouble("jDirectionIncrementInDegrees");// * DEG_TO_RAD;
-	if ( ! gribHandleReader_->getLong("jScansPositively") )
+	double jIncrement = gribHandleReader_.getDouble("jDirectionIncrementInDegrees");// * DEG_TO_RAD;
+	if ( ! gribHandleReader_.getLong("jScansPositively") )
 		jIncrement *= -1;
 
-	double startI = gribHandleReader_->getDouble("longitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
-	double startJ = gribHandleReader_->getDouble("latitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+	double startI = gribHandleReader_.getDouble("longitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+	double startJ = gribHandleReader_.getDouble("latitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
 
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
     log.debugStream() << "Creating geometry with ("
@@ -118,24 +118,15 @@ void GribGridDefinition::setup()
     geometry_ = new GridGeometry(sridProj, o, iNumber, jNumber, iIncrement, jIncrement, startI, startJ );
 }
 
-GribGridDefinition::GribGridDefinition( grib_handle * gribHandle )
-	: geometry_(0)
+GribGridDefinition::GribGridDefinition( GribHandleReaderInterface & reader )
+	: geometry_(0), gribHandleReader_(reader)
 {
-	gribHandleReader_ = new GribHandleReader(gribHandle);
-	setup();
-}
-
-GribGridDefinition::GribGridDefinition( GribHandleReaderInterface * gribHandleR )
-	: geometry_(0)
-{
-	gribHandleReader_ = gribHandleR;
 	setup();
 }
 
 GribGridDefinition::~GribGridDefinition()
 {
 	delete geometry_;
-	delete gribHandleReader_;
 }
 
 // Operations
@@ -213,7 +204,7 @@ std::string GribGridDefinition::getProjDefinition() const
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.griddefinition" );
 
-	switch (gribHandleReader_->getLong("dataRepresentationType"))
+	switch (gribHandleReader_.getLong("dataRepresentationType"))
     {
     case REGULAR_LAT_LON_GRID:
         log.debug( "Field has a regular lat/lon grid" );
@@ -234,7 +225,7 @@ GribGridDefinition::regularLatLonProjDefinition() const
     std::ostringstream srcProjDef;
     srcProjDef << "+proj=longlat";
    	long int earthIsOblate;
-	earthIsOblate = gribHandleReader_->getLong("earthIsOblate");;
+	earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
     if (earthIsOblate)
     {
         srcProjDef << " +a=6378160.0 +b=6356775.0";
@@ -259,12 +250,12 @@ GribGridDefinition::rotatedLatLonProjDefinition() const
     std::ostringstream srcProjDef;
     srcProjDef << "+proj=ob_tran +o_proj=longlat";
     srcProjDef << " +lon_0=";
-    srcProjDef << gribHandleReader_->getDouble("longitudeOfSouthernPoleInDegrees");
+    srcProjDef << gribHandleReader_.getDouble("longitudeOfSouthernPoleInDegrees");
     srcProjDef << " +o_lat_p=";
-    srcProjDef << - gribHandleReader_->getDouble("latitudeOfSouthernPoleInDegrees");
+    srcProjDef << - gribHandleReader_.getDouble("latitudeOfSouthernPoleInDegrees");
     // Earth Shape
    	long int earthIsOblate;
-	earthIsOblate = gribHandleReader_->getLong("earthIsOblate");;
+	earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
     if (earthIsOblate)
     {
         srcProjDef << " +a=6378160.0 +b=6356775.0";

@@ -78,6 +78,8 @@ public:
      */
      GribField( grib_handle * gribHandle );
 
+     GribField( GribHandleReaderInterface * gribHandleReader );
+
     /** Destructor
      */
     ~GribField();
@@ -90,6 +92,7 @@ public:
      *  @return		A double array containing the data grid
      */
     const double * getValues( ) const;
+
     /** Get size of the data grid
      *  @return		The size of the data grid
      */
@@ -212,7 +215,7 @@ private:
     /// The number of value elements (size of values_ array)
     size_t sizeOfValues_;
     /// The GRID definition of the GRIB field
-    GribGridDefinition grid_;
+    GribGridDefinition * grid_;
 
     /// Used for calculations, just a cached value of the referenceTime() method
     mutable boost::posix_time::ptime referenceTime_;
@@ -241,8 +244,6 @@ private:
 
     /// Wraps reading of grib_handle
     GribHandleReaderInterface * gribHandleReader_;
-
-
 };
 
 }	// namespace grib

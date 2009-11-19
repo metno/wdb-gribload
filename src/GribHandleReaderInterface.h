@@ -57,21 +57,29 @@ class GribHandleReaderInterface
 public:
 	/// Destructor
 	virtual ~GribHandleReaderInterface() {}
-	/** Get a long value from the grib_handle
+
+	/**
+	 * Get a long value from the grib_handle
 	 * @param	name	the attribute in the GRIB field
 	 * @return	value
 	 */
 	virtual long getLong( const char * name ) =0;
-	/** Get a double value from the grib_handle
+
+	/**
+	 * Get a double value from the grib_handle
 	 * @param	name	the attribute in the GRIB field
 	 * @return	value
 	 */
 	virtual double getDouble( const char * name ) =0;
-	/** Get the size of the value grid from the grib_handle
+
+	/**
+	 * Get the size of the value grid from the grib_handle
 	 * @return	the size of the value grid in number of doubles
 	 */
 	virtual size_t getValuesSize( ) = 0;
-	/** Get the value grid from the grib_handle
+
+	/**
+	 * Get the value grid from the grib_handle
 	 * @return	a pointer to an array of doubles
 	 */
 	virtual double * getValues( ) = 0;

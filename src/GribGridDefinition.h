@@ -96,9 +96,9 @@ class GribGridDefinition : boost::noncopyable
 public:
 	// LIFECYCLE
     /**
-     * Default Constructor
+     * Constructor
      */
-    explicit GribGridDefinition( grib_handle * gribHandle_ );
+    explicit GribGridDefinition( GribHandleReaderInterface & reader);
 
     /**
      * Default Destructor
@@ -157,10 +157,6 @@ public:
 
 	// INQUIRY
 
-protected:
-	/// Constructor used for testing
-    GribGridDefinition( GribHandleReaderInterface * gribHandleReader );
-
 private:
 
 
@@ -178,7 +174,7 @@ private:
     GridGeometry * geometry_;
 
     /// Wraps reading of grib_handle (in order to facilitate testing).
-    GribHandleReaderInterface * gribHandleReader_;
+    GribHandleReaderInterface & gribHandleReader_;
 };
 
 } // namespace grib
