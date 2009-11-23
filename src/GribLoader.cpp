@@ -152,7 +152,7 @@ void GribLoader::load( const GribField & field, int fieldNumber )
 				 << levels[0].levelFrom_ << ", "
 				 << levels[0].levelTo_ << ", "
 				 << dataVersion( field ) << ", "
-				 << confidenceCode( field );
+				 << confidenceCode( field ) << std::endl;
 
 	    }
 	    else {
