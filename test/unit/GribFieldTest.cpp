@@ -82,7 +82,7 @@ void GribFieldTest::test()
 	// 18 19 20 21 22 23
 
 	GribField f(reader);
-	CPPUNIT_ASSERT_EQUAL(24u, f.getValuesSize());
+	CPPUNIT_ASSERT_EQUAL(size_t(24), f.getValuesSize());
 
     const double * values = f.getValues();
 
@@ -106,7 +106,7 @@ void GribFieldTest::testReorganizeGrid()
 	reader->expected["scanningMode"] = 0; // LeftUpperHorizontal
 
 	GribField f(reader);
-	CPPUNIT_ASSERT_EQUAL(24u, f.getValuesSize());
+	CPPUNIT_ASSERT_EQUAL(size_t(24), f.getValuesSize());
 
     const double * values = f.getValues();
 
