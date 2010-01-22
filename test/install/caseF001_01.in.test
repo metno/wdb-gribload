@@ -43,7 +43,7 @@ startTime=`date +%s%N`
 # Prepare Test
 NON_FILE=${TMP_PATH}/nonexistent.grib
 EXPECTED_LOG_MESSAGE="${NON_FILE}: No such file - will not load"
-EXECUTE="${GRIBLOAD_PATH}/gribLoad ${NON_FILE}"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test ${NON_FILE}"
 
 # Clean out database
 source ${TEST_PATH}/tearDown.sh

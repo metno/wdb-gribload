@@ -43,7 +43,7 @@ startTime=`date +%s%N`
 # Prepare Test
 EMPTY_FILE=${TMP_PATH}/empty_file.grib
 EXPECTED_LOG_MESSAGE="End of file was hit before a product was read into file ${EMPTY_FILE}"
-EXECUTE="${GRIBLOAD_PATH}/gribLoad ${EMPTY_FILE}"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test ${EMPTY_FILE}"
 
 # Clean out database
 source ${TEST_PATH}/tearDown.sh

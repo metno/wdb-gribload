@@ -43,7 +43,7 @@ startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:00)
 EXPECTED_LOG_MESSAGE='Failed to identify a placename.'
-EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test ${TEST_FILE}"
 
 # Clean out database
 source ${TEST_PATH}/tearDown.sh

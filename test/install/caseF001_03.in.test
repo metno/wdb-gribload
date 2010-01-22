@@ -45,7 +45,7 @@ TESTTIME=$(date +%FT12:00:00)
 # Todo: On 8.3 this is duplicate key value violates...
 # 8.2 and earlier throw a different error message
 EXPECTED_LOG_MESSAGE='violates unique constraint'
-EXECUTE="${GRIBLOAD_PATH}/gribLoad ${TEST_FILE}"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test ${TEST_FILE}"
 
 # Clean out database
 source ${TEST_PATH}/tearDown.sh

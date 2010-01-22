@@ -41,7 +41,7 @@ esac
 startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:01)
-EXECUTE="${GRIBLOAD_PATH}/gribLoad --name ${TEST_FILE}"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test --name ${TEST_FILE}"
 RESFILE="$TMP_PATH/case$TESTCASE.tmp"
 
 # Clean out database
