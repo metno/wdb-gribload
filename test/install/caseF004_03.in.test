@@ -54,7 +54,7 @@ EOF
 
 # Generate Test Data
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --insGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE --loadPlaceDefinition
@@ -70,8 +70,6 @@ then
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION - could not find data"
 	fi
 	exit 1
-	$PSQL -q -Atc "select test.insertplacedef()"  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
-    exit 1
 fi
 if grep -q -E "WARN" $LOGFILE;
 then
@@ -83,14 +81,12 @@ then
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	fi
-	$PSQL -q -Atc "select test.insertplacedef()"  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
     exit 1
 fi
 
 # Clean up
-$PSQL -q  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -Atc "select test.removeInsertedplacedef()"
+$PSQL -q  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -Atc "select test.removeplacedef()"
 source ${TEST_PATH}/tearDown.sh
-$PSQL -q  --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp -Atc "select test.insertplacedef()"
 
 # Exit
 endTime=`date +%s%N`

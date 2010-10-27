@@ -153,7 +153,21 @@ GribWriter::Options::Geo::Geo( GeoDefaults g )
 	{
 		case TestGrid:
 			iNum = 2;
-	        jNum = 2;
+			jNum = 2;
+			startLat = 0;
+			startLon = 0;
+			stopLat = 100;
+			stopLon = 100;
+			iIncrement = 100;
+			jIncrement = 100;
+			scanningMode = 64;
+			southPoleLat = -22000;
+			southPoleLon = -40000;
+			angleOfRotation = 0;
+			break;
+		case TestInsertGrid:
+			iNum = 3;
+	        jNum = 3;
 	        startLat = 0;
 	        startLon = 0;
 	        stopLat = 100;

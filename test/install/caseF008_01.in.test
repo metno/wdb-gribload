@@ -82,7 +82,7 @@ fi
 
 
 # Check Result
-$PSQL -Atc "select wci.begin('gribtest'); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(28.441 70.9346)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
+$PSQL -Atc "select wci.begin('gribtest',999,999,999); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(28.441 70.9346)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
 if ! grep -qE "4.7" $RESFILE;
 then
 	endTime=`date +%s%N`
@@ -92,10 +92,10 @@ then
 	else
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (failure on point 1 check)"
 	fi
-	source ${TEST_PATH}/tearDown.sh
+	#source ${TEST_PATH}/tearDown.sh
     exit 1
 fi
-$PSQL -Atc "select wci.begin('gribtest'); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(-16.3113 75.7354)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
+$PSQL -Atc "select wci.begin('gribtest',999,999,999); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(-16.3113 75.7354)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
 if ! grep -qE "1.7" $RESFILE;
 then
 	endTime=`date +%s%N`
@@ -108,7 +108,7 @@ then
 	source ${TEST_PATH}/tearDown.sh
     exit 1
 fi
-$PSQL -Atc "select wci.begin('gribtest'); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(49.277 61.3378)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
+$PSQL -Atc "select wci.begin('gribtest',999,999,999); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(49.277 61.3378)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
 if ! grep -qE "6.1" $RESFILE;
 then
 	endTime=`date +%s%N`
@@ -121,7 +121,7 @@ then
 	source ${TEST_PATH}/tearDown.sh
     exit 1
 fi
-$PSQL -Atc "select wci.begin('gribtest'); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(-10.4419 50.1503)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
+$PSQL -Atc "select wci.begin('gribtest',999,999,999); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(-10.4419 50.1503)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
 if ! grep -qE "9.2" $RESFILE;
 then
 	endTime=`date +%s%N`
@@ -134,7 +134,7 @@ then
 	source ${TEST_PATH}/tearDown.sh
     exit 1
 fi
-$PSQL -Atc "select wci.begin('gribtest'); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(68.8721 72.1376)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
+$PSQL -Atc "select wci.begin('gribtest',999,999,999); select value from wci.read(ARRAY['test gribload'], 'nearest POINT(68.8721 72.1376)', NULL, NULL, NULL, NULL, NULL, NULL::wci.returnFloat)" -o $RESFILE
 if ! grep -qE "2.8999" $RESFILE;
 then
 	endTime=`date +%s%N`

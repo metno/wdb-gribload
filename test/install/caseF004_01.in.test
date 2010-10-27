@@ -54,13 +54,13 @@ EOF
 
 # Generate Test Data
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --insGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE
 
 # Check Result
-if ! $PSQL -q -Atc "select count(*) from test.gridvalue where placeid=500" | grep -qE "^0$"
+if ! $PSQL -q -Atc "select count(*) from test.gridvalue where placeid=(select placeid from test.placeregulargrid where placename='test grid, gribLoad'); " | grep -qE "^0$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
@@ -71,7 +71,6 @@ then
 	fi
     echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION"
 	source ${TEST_PATH}/tearDown.sh
-	$PSQL -q -Atc "select test.insertplacedef()" --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
     exit 1
 fi
 if ! grep -q -E "${EXPECTED_LOG_MESSAGE}" $LOGFILE;
@@ -85,13 +84,11 @@ then
     	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (log messages)"
 	fi
 	source ${TEST_PATH}/tearDown.sh
-	$PSQL -q -Atc "select test.insertplacedef()" --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
     exit 1
 fi
 
 # Clean up
 source ${TEST_PATH}/tearDown.sh
-$PSQL -q -Atc "select test.insertplacedef()" --output __WDB_LOGDIR__/wdb_test_gribLoad.tmp
 
 # Exit
 endTime=`date +%s%N`

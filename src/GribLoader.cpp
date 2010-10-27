@@ -230,7 +230,7 @@ std::string GribLoader::placeName(const GribField & field) const
 		if ( loadingConfiguration_.loading().loadPlaceDefinition ) {
 			log.debugStream() << "Attempting to insert new placeName";
 			placeName = "GribLoad AutoInsert ";
-			ptime now = second_clock::local_time();
+			ptime now = microsec_clock::local_time();
 			placeName += to_iso_extended_string( now );
 			placeName = connection_.addPlaceDefinition( placeName,
 														field.numberX(), field.numberY(),

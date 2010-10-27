@@ -50,7 +50,8 @@ CommandLineParser::CommandLineParser( GribWriter::Options & gwOpt )
     ( "hirlam10", "Use the met.no hirlam10 grid." )
     ( "hirlam20", "Use the met.no hirlam20 grid." )
     ( "proff", "Use the met.no proff grid." )
-    ( "testGrid", "Use a simple 2x2 test grid." );
+    ( "testGrid", "Use a simple 2x2 test grid." )
+    ( "insGrid", "Use a simple 3x3 test grid." );
 
 
     options_description time( "Time" );
@@ -173,6 +174,9 @@ CommandLineParser::ParseResult CommandLineParser::parse( int argc, char ** argv 
 
     if ( vm.count( "testGrid" ) )
         gwOpt_.geo = GribWriter::Options::TestGrid;
+
+    if ( vm.count( "insGrid" ) )
+        gwOpt_.geo = GribWriter::Options::TestInsertGrid;
 
     if ( ! vm.count( "parameter" ) )
     {

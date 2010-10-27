@@ -123,7 +123,7 @@ public:
 		 * GeoNone is an invalid geo (all 0).
 		 * Hirlam10 is a hirlam 10km grid as used by met.no
 		 */
-		enum GeoDefaults { GeoNone, TestGrid, Hirlam10, Hirlam20, Proff };
+		enum GeoDefaults { GeoNone, TestGrid, TestInsertGrid, Hirlam10, Hirlam20, Proff };
 
 		/**
 		 * Make a reasonable initialization of all values
