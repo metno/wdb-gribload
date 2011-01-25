@@ -1,3 +1,9 @@
+gribload (0.9.8-1) hardy; urgency=low
+
+  * New version (wdb). Metadata update. 
+
+ -- Michael Omotayo Akinde <michaeloa@pc2506.pc.met.no>  Tue, 25 Jun 2011 15:00:00 +0000
+
 gribload (0.9.7-1) hardy; urgency=low
 
   * New version (wdb) 
