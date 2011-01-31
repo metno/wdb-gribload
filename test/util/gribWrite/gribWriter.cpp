@@ -314,43 +314,40 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     GW_CHECK( grib_set_long( handle, "identificationOfOriginatingGeneratingSubCentre", 0 ) );
 
     GW_CHECK( grib_set_long( handle, "decimalScaleFactor", 0 ) );
-    GW_CHECK( grib_set_long( handle, "numberOfVerticalCoordinateValues", 1 ) );
-    GW_CHECK( grib_set_long( handle, "pvlLocation", 43 ) );
 
+
+    /*
+     * Section 2
+     */
+    GW_CHECK( grib_set_long( handle, "numberOfVerticalCoordinateValues", 0 ) );
+    GW_CHECK( grib_set_long( handle, "pvlLocation", 255 ) );
     /* 10 = Rotated Latitude/Longitude grid (grib1/6.table)  */
     GW_CHECK( grib_set_long( handle, "dataRepresentationType", 10 ) );
-
     GW_CHECK( grib_set_long( handle, "numberOfPointsAlongAParallel", opt.geo.iNum /*248*/ ) );
     GW_CHECK( grib_set_long( handle, "numberOfPointsAlongAMeridian", opt.geo.jNum /*400*/ ) );
     GW_CHECK( grib_set_long( handle, "latitudeOfFirstGridPoint", opt.geo.startLat /*-13250*/ ) );
     GW_CHECK( grib_set_long( handle, "longitudeOfFirstGridPoint", opt.geo.startLon /*5750*/ ) );
-
     /* 136 = 10001000
     (1=1)  Direction increments given
     (2=0)  Earth assumed spherical with radius = 6367.47 km
     (5=1)  u and v components resolved relative to the defined grid
     See grib1/7.table */
     GW_CHECK( grib_set_long( handle, "resolutionAndComponentFlags", 136 ) );
-
     GW_CHECK( grib_set_long( handle, "latitudeOfLastGridPoint", opt.geo.stopLat /*26650*/ ) );
     GW_CHECK( grib_set_long( handle, "longitudeOfLastGridPoint", opt.geo.stopLon /*30450*/ ) );
     GW_CHECK( grib_set_long( handle, "iDirectionIncrement", opt.geo.iIncrement /*100*/ ) );
     GW_CHECK( grib_set_long( handle, "jDirectionIncrement", opt.geo.jIncrement /*100*/ ) );
-
     /* 64 = 01000000
     (1=0)  Points scan in +i direction
     (2=1)  Points scan in +j direction
     (3=0)  Adjacent points in i direction are consecutive
     See grib1/8.table */
     GW_CHECK( grib_set_long( handle, "scanningMode", opt.geo.scanningMode /*64*/ ) );
-
-
-    /* ITERATOR */
-
     GW_CHECK( grib_set_long( handle, "latitudeOfSouthernPole", opt.geo.southPoleLat /*-22000*/ ) );
     GW_CHECK( grib_set_long( handle, "longitudeOfSouthernPole", opt.geo.southPoleLon /*-40000*/ ) );
     GW_CHECK( grib_set_double( handle, "angleOfRotationInDegrees", opt.geo.angleOfRotation ) );
-    GW_CHECK( grib_set_double( handle, "pv", 0 ) );
+    //GW_CHECK( grib_set_double( handle, "PV", 0 ) );
+
 
     /* 8 = 00001000
     (1=0)  Grid-point data
@@ -360,7 +357,6 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     See grib1/11.table */
     //GW_CHECK(grib_set_long(handle,"dataFlag",8),0);
     // <--  THIS DOES NOT WORK!
-
 
     GW_CHECK( grib_set_long( handle, "numberOfBitsContainingEachPackedValue", 15 ) );
 
