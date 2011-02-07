@@ -54,7 +54,7 @@ EOF
 
 # Generate Test Data
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --insGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --insGrid --generatingCentre 1 --generatingProcess 254 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE

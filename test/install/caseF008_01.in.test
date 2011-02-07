@@ -49,7 +49,7 @@ source ${TEST_PATH}/tearDown.sh
 
 # Generate Test Data
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite -P125,273=4.7 -P0,221=1.7 -P247,321=6.1 -P132,0=9.2 -P132,399=2.9 --hirlam10 --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite -P125,273=4.7 -P0,221=1.7 -P247,321=6.1 -P132,0=9.2 -P132,399=2.9 --hirlam10 --generatingCentre 1 --generatingProcess 254 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE

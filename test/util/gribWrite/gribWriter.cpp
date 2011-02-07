@@ -267,7 +267,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     grib_handle_manager handle( NULL, "GRIB1" );
 
     GW_CHECK( grib_set_long( handle, "editionNumber", 1 ) );
-    GW_CHECK( grib_set_long( handle, "gribTablesVersionNo", 1 ) );
+    GW_CHECK( grib_set_long( handle, "gribTablesVersionNo", 254 ) );
 
     /* 96 = Athens (grib1/0.table)  */
     //GW_CHECK(grib_set_long(handle,"identificationOfOriginatingGeneratingCentre",96),0);

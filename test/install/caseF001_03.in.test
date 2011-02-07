@@ -42,9 +42,9 @@ esac
 startTime=`date +%s%N`
 # Prepare Test
 TESTTIME=$(date +%FT12:00:00)
-# Todo: On 8.3 this is duplicate key value violates...
-# 8.2 and earlier throw a different error message
-EXPECTED_LOG_MESSAGE='violates unique constraint'
+# Postgres>=8.3 this is duplicate key value violates...
+# Postgres<=8.2 throw a different error message
+EXPECTED_LOG_MESSAGE='duplicate key value violates unique constraint'
 EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test ${TEST_FILE}"
 
 # Clean out database
@@ -52,10 +52,10 @@ source ${TEST_PATH}/tearDown.sh
 
 # Generate Test Data
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 10 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 252 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 10 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 $TEST_FILE
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE

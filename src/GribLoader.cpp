@@ -253,8 +253,7 @@ std::string GribLoader::valueParameterName(const GribField & field) const
 		   << field.getCodeTableVersionNumber() << ", "
 		   << field.getParameter() << ", "
 		   << field.getTimeRange() << ", "
-		   << "0, 0, 0, 0, " // Default values for thresholds
-		   << field.getLevelParameter();
+		   << "0, 0, 0, 0"; // Default values for thresholds
 	std::string ret;
 	try {
 		ret = Grib2ValueParameter_[keyStr.str()];
@@ -276,8 +275,7 @@ std::string GribLoader::valueParameterUnit(const GribField & field) const
 		   << field.getCodeTableVersionNumber() << ", "
 		   << field.getParameter() << ", "
 		   << field.getTimeRange() << ", "
-		   << "0, 0, 0, 0, " // Default values for thresholds
-		   << field.getLevelParameter();
+		   << "0, 0, 0, 0"; // Default values for thresholds
 	std::string ret;
 	try {
 		ret = Grib2ValueParameter_[keyStr.str()];
