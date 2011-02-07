@@ -329,7 +329,8 @@ void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const Grib
 			   << field.getCodeTableVersionNumber() << ", "
 			   << field.getParameter() << ", "
 			   << field.getTimeRange() << ", "
-			   << "0, 0, 0, 0"; // Default values for thresholds
+			   << "0, 0, 0, 0, "
+			   << field.getLevelParameter(); // Default values for thresholds
 		std::string ret = Grib2LevelAdditions_[keyStr.str()];
 		if ( ret.length() != 0 ) {
 			std::string levelParameter = ret.substr( 0, ret.find(',') );
