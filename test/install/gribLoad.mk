@@ -40,7 +40,6 @@ CLEANFILES +=				gribLoadInstallTest \
 EXTRA_DIST +=				test/install/gribLoadInstallTest.in.sh \
 							$(GRIBLOADTEST_SOURCES) \
 							$(GRIBLOADTEST_SUPPORT) \
-							test/install/caseF003_01.grib \
 							test/install/gribLoad.mk 
 
 gribLoadInstallTest:		test/install/gribLoadInstallTest.in.sh
