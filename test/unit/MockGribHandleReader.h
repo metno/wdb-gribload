@@ -33,6 +33,7 @@
 #include <GribHandleReader.h>
 #include <map>
 #include <vector>
+#include <string>
 
 
 class MockGribHandleReader : public wdb::grib::GribHandleReaderInterface

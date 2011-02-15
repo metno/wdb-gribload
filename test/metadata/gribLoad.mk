@@ -8,7 +8,7 @@ GRIBLOADMTEST_SUPPORT =		test/metadata/tearDown.in.sh \
 
 INSTALLTESTS +=				gribLoadMetadataTest
 
-noinst_SCRIPTS +=			gribLoadMetadataTest
+noinst_SCRIPTS +=			gribLoadMetadataTest \
 							$(GRIBLOADMTEST_SUPPORT:.in.sh=.sh) 
 
 CLEANFILES +=				gribLoadMetadataTest \
