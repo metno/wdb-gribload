@@ -47,7 +47,7 @@ while test -n "$1"; do
 	esac
 done
 
-EXECUTE="${GRIBLOAD_PATH}/gribLoad --namespace=test"
+EXECUTE="${GRIBLOAD_PATH}/gribLoad"
 
 TOTAL_TESTS=0
 RUN_TESTS=0
@@ -135,14 +135,11 @@ for fil in $files; do
 	LOGFILE=$LOG_PATH/gribLoadMetadataTest-$RUN_TESTS.log
 	rm -f $LOGFILE
 	RUN_TESTS=`expr $RUN_TESTS + 1`;
-	if test -z $fil; then
+	if test -f $fil; then
 		fileStartTime=`date +%s%N`
 		$EXECUTE --logfile $LOGFILE $fil
 		fileEndTime=`date +%s%N`
 		fileTime=$(echo "scale = 3; ($fileEndTime-$fileStartTime)/1000000000" | bc -l)
-		if test "$XML_OPT" != "-x"; then
-   			echo -e "done"
-		fi
 		if grep -q -E "ERROR" $LOGFILE; then
 			ERROR_TESTS=`expr $ERROR_TESTS + 1`
 			TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`
