@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(gribLoad, 0.9.8, [wdb@met.no])
+AC_INIT(gribLoad, 1.0.0, [wdb@met.no])
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
@@ -76,7 +76,7 @@ WDB_GRIB_CHECK(1.2.0)
 WDB_BOOST_CHECK(1.33.1)
 
 # LOG4CPP
-WDB_LOG4CPP_CHECK(0.3.5rc3)
+WDB_LOG4CPP_CHECK(1.0)
 
 # PROJ
 WDB_PROJ_CHECK
