@@ -1,6 +1,6 @@
 wdb-gribload (1.0.0~rc2-1) lucid; urgency=low
 
-  * Updated metadata for GRIB paramater 248. 
+  * Updated metadata for GRIB parameter 248. 
 
  -- Michael Akinde <wdb@met.no>  Wed, 02 Mar 2011 15:00:00 +0000
 
