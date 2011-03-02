@@ -1,4 +1,10 @@
-wdb-gribload (1.0.0~rc1-1) hardy; urgency=low
+wdb-gribload (1.0.0~rc2-1) lucid; urgency=low
+
+  * Updated metadata for GRIB paramater 248. 
+
+ -- Michael Akinde <wdb@met.no>  Wed, 02 Mar 2011 15:00:00 +0000
+
+wdb-gribload (1.0.0~rc1-1) lucid; urgency=low
 
   * New version (wdb). Metadata update. 
 
