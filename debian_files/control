@@ -1,13 +1,20 @@
-Source: gribload
+Source: wdb-gribload
 Section: science
 Priority: extra
 Maintainer: Vegard Bønes <wdb@met.no>
-Build-Depends: debhelper (>= 5), autotools-dev, libgrib-api-dev, libgrib-api-tools, libwdbload1
+Build-Depends: debhelper (>= 5),
+ autotools-dev,
+ libgrib-api-dev,
+ libgrib-api-tools,
+ wdb-libwdbload1
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.9.1
 
-Package: gribload
+Package: wdb-gribload
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwdbload1, libgrib-api-0d-0
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ wdb-libwdbload1,
+ libgrib-api-0d-0
 Description: Load GRIB files into wdb
  Read GRIB files and store them into a wdb database.
