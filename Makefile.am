@@ -100,6 +100,7 @@ PERFORMANCETESTS =
 
 include src/gribLoad.mk
 include etc/gribLoad.mk
+include doc/gribLoad.mk
 include test/unit/gribLoad.mk
 include test/install/gribLoad.mk
 include test/metadata/gribLoad.mk
