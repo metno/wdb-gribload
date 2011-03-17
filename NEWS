@@ -1,6 +1,12 @@
+wdb-gribload (1.0.1-1) lucid; urgency=low
+
+  * Metadata changes to add dew point temperature (98, 128, 168).
+
+ -- Michael Akinde <wdb@met.no>  Thu, 17 Mar 2011 12:00:00 +0000
+
 wdb-gribload (1.0.0-1) lucid; urgency=high
 
-  * Release version of WDB 1.0.0
+  * Release version of WDB 1.0.0.
 
  -- Michael Akinde <wdb@met.no>  Wed, 09 Mar 2011 12:00:00 +0000
 
