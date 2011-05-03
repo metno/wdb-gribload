@@ -44,6 +44,7 @@
  */
 
 #include <stdlib.h>
+#include <string>
 
 namespace wdb
 {
@@ -71,6 +72,13 @@ public:
 	 * @return	value
 	 */
 	virtual double getDouble( const char * name ) =0;
+
+	/**
+	 * Get a string value from the grib_handle
+	 * @param	name	the attribute in the GRIB field
+	 * @return	value
+	 */
+	virtual std::string getString( const char * name ) =0;
 
 	/**
 	 * Get the size of the value grid from the grib_handle

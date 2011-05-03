@@ -61,6 +61,14 @@ double GribHandleReader::getDouble( const char * name )
 	return ret;
 }
 
+std::string GribHandleReader::getString( const char * name )
+{
+	size_t retLn = 20;
+	char ret[retLn];
+	errorCheck( grib_get_string(gribHandle_, name, &ret[0], &retLn), name );
+	std::string retS = &ret[0];
+	return retS;
+}
 
 double * GribHandleReader::getValues( )
 {

@@ -148,7 +148,11 @@ public:
     /** GRIB parameter
      * @return	The GRIB parameter
      */
-    long int getParameter() const;
+    long int getParameter1() const;
+    /** GRIB parameter
+     * @return	The GRIB parameter
+     */
+    long int getParameter2() const;
     /** GRIB time range of the field data
      * @return	The GRIB time range
      */
@@ -156,7 +160,11 @@ public:
     /** GRIB level parameter
      * @return	The GRIB level parameter
      */
-    long int getLevelParameter() const;
+    long int getLevelParameter1() const;
+    /** GRIB level parameter
+     * @return	The GRIB level parameter
+     */
+    std::string getLevelParameter2() const;
     /**
      * Return the Level From of the field
      * @return LevelFrom
@@ -203,6 +211,11 @@ public:
      */
 	std::string getProjDefinition() const;
 
+    /**
+     * Return the Edition Number of the field
+     * @return Edition Number
+     */
+    int getEditionNumber() const;
 // INQUIRY
     // NOOP
 
@@ -219,9 +232,21 @@ private:
 
     /// Used for calculations, just a cached value of the referenceTime() method
     mutable boost::posix_time::ptime referenceTime_;
+    /// Used for calculations, just a cached value of the validityTime() method
+    mutable boost::posix_time::ptime validityTime_;
 
 
 // PRIVATE METHODS
+    /**
+     * Return the Validity Time of the field
+     *
+     * @warning Do not call getValidTimeFrom() or getValidTimeTo() before you
+     *          have called getValidityTime() at least once. That will
+     *          trigger a caching bug
+     *
+     * @return ReferenceTime
+     */
+    std::string getValidityTime() const;
 	/**
 	 * Retrieve the values from the file into an array pointed to by values_
 	 */

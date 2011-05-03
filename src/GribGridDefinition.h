@@ -157,6 +157,7 @@ public:
 
 	// INQUIRY
 
+
 private:
 
 
@@ -166,6 +167,9 @@ private:
     /** Sets up the array information for a rotated lat/long grid (equidistant cylindrical)
      */
     std::string rotatedLatLonProjDefinition() const;
+    /** Sets up the array information for a rotated lat/long grid (equidistant cylindrical)
+     */
+    std::string lambertProjDefinition() const;
 
     /// Perform initial setup of object. Called by all constructors
     void setup();
@@ -175,6 +179,18 @@ private:
 
     /// Wraps reading of grib_handle (in order to facilitate testing).
     GribHandleReaderInterface & gribHandleReader_;
+
+
+    // Grid Types - WMO Code Table 6
+    enum  grid_type {
+    	UNDEFINED_GRID,
+        REGULAR_LONLAT,
+        ROTATED_LONLAT,
+        REGULAR_GAUSSIAN,
+        LAMBERT
+    };
+    grid_type getGridType() const;
+
 };
 
 } // namespace grib

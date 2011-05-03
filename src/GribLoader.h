@@ -146,6 +146,8 @@ private:
     void convertValues( const GribField & field, std::vector<double> & valuesInOut ) const;
 
 private:
+    /// GRIB Edition Number
+    int editionNumber_;
 	/// The Database Connection
 	wdb::load::LoaderDatabaseConnection & connection_;
 	/// The GribLoad Configuration
@@ -156,11 +158,23 @@ private:
 	/// Conversion Hash Map - Dataprovider Name
 	wdb::WdbConfigFile Grib2DataProviderName_;
 	/// Conversion Hash Map - Value Parameter
-	wdb::WdbConfigFile Grib2ValueParameter_;
+	wdb::WdbConfigFile Grib2ValueParameter1_;
+	/// Conversion Hash Map - Value Parameter
+	wdb::WdbConfigFile Grib2ValueParameter2_;
 	/// Conversion Hash Map - Level Parameter
-	wdb::WdbConfigFile Grib2LevelParameter_;
+	wdb::WdbConfigFile Grib2LevelParameter1_;
 	/// Conversion Hash Map - Level Additions
-	wdb::WdbConfigFile Grib2LevelAdditions_;
+	wdb::WdbConfigFile Grib2LevelAdditions1_;
+	/// Conversion Hash Map - Level Parameter
+	wdb::WdbConfigFile Grib2LevelParameter2_;
+	/// Conversion Hash Map - Level Additions
+	wdb::WdbConfigFile Grib2LevelAdditions2_;
+
+	/** Retrieve the edition number of the GRIB field
+	 * @param	field	The GRIB field to be loaded
+	 * @returns			The version number
+	 */
+	int editionNumber(const GribField & field) const;
 
 };
 

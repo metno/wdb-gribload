@@ -1,3 +1,15 @@
+wdb-gribload (1.0.2-1) lucid; urgency=medium
+
+  * Implemented limited GRIB2 support in the game. Tested with hpc
+    forecast precipitation fields (NOAA).
+    
+  * Metadata implemented separately for GRIB1 and GRIB2 fields.
+  
+  * Install tests updated to use code tables from ECMWF. This is done
+    to minimize clashes with other metadata.
+
+ -- Michael Akinde <wdb@met.no>  Thu, 17 Mar 2011 12:00:00 +0000
+
 wdb-gribload (1.0.1-1) lucid; urgency=low
 
   * Metadata changes to add dew point temperature (98, 128, 168).
