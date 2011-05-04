@@ -47,8 +47,8 @@ void GribFieldTest::setUp()
 	// Set a reasonable default
 	reader->expected["dataRepresentationType"] = 10;
 	reader->expected["scanningMode"] = 64; // LeftLowerHorizontal
-	reader->expected["numberOfPointsAlongAParallel"] = 6;
-	reader->expected["numberOfPointsAlongAMeridian"] = 4;
+	reader->expected["Ni"] = 6;
+	reader->expected["Nj"] = 4;
 	reader->expected["iDirectionIncrementInDegrees"] = 0.1;
 	reader->expected["jDirectionIncrementInDegrees"] = 0.1;
 	reader->expected["iScansNegatively"] = 0;
@@ -60,6 +60,8 @@ void GribFieldTest::setUp()
 	reader->expected["latitudeOfSouthernPoleInDegrees"] = -22;
 	reader->expected["longitudeOfSouthernPoleInDegrees"] = -40;
 	reader->expected["earthIsOblate"] = 0;
+
+	reader->expectedStr["gridType"] = "regular_ll";
 
 	reader->fillGridWith(0);
 

@@ -237,7 +237,7 @@ GribGridDefinition::grid_type GribGridDefinition::getGridType() const
     if (gridType == "lambert")
         return LAMBERT;
 
-    if (gridType == "regular_ll")
+    if (gridType == "regular_gg")
         return REGULAR_GAUSSIAN;
 
     log.warnStream() << "Could not identify gridType: " << gridType;

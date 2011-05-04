@@ -1,5 +1,7 @@
 wdb-gribload (1.0.2-1) lucid; urgency=medium
 
+  * Added metadata for ecmwf atmospheric 37r2.
+
   * Implemented limited GRIB2 support in the game. Tested with hpc
     forecast precipitation fields (NOAA).
     

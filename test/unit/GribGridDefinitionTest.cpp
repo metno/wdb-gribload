@@ -43,16 +43,20 @@ struct TestingGribGridDefinition : public wdb::grib::GribGridDefinition
 {
 	TestingGribGridDefinition(MockGribHandleReader & reader) :
 		wdb::grib::GribGridDefinition(reader)
-	{}
+	{
+		// NOOP
+	}
 };
 
 
 GribGridDefinitionTest::GribGridDefinitionTest()
 {
+	// NOOP
 }
 
 GribGridDefinitionTest::~GribGridDefinitionTest()
 {
+	// NOOP
 }
 
 void GribGridDefinitionTest::setUp()
@@ -64,8 +68,8 @@ void GribGridDefinitionTest::setUp()
 	reader->expected["dataRepresentationType"] = 10;
 	reader->expected["scanningMode"] = 64;
 
-	reader->expected["numberOfPointsAlongAParallel"] = 248;
-	reader->expected["numberOfPointsAlongAMeridian"] = 400;
+	reader->expected["Ni"] = 248;
+	reader->expected["Nj"] = 400;
 	reader->expected["iDirectionIncrementInDegrees"] = 0.1;
 	reader->expected["jDirectionIncrementInDegrees"] = 0.1;
 	reader->expected["iScansNegatively"] = 0;
@@ -77,6 +81,8 @@ void GribGridDefinitionTest::setUp()
 	reader->expected["latitudeOfSouthernPoleInDegrees"] = -22;
 	reader->expected["longitudeOfSouthernPoleInDegrees"] = -40;
 	reader->expected["earthIsOblate"] = 0;
+
+	reader->expectedStr["gridType"] = "rotated_ll";
 
 	// hirlam8 differences:
 	//	reader->expected["numberOfPointsAlongAParallel"] = 344;
@@ -144,5 +150,4 @@ void GribGridDefinitionTest::testGetGeometry()
 	CPPUNIT_ASSERT_EQUAL(expected, geometry);
 	pj_free(hirlam10Proj);
 	pj_free(targetProj);
-
 }
