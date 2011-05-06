@@ -1,4 +1,4 @@
-wdb-gribload (1.0.2-1) lucid; urgency=medium
+wdb-gribload (1.0.2~rc1-1) lucid; urgency=medium
 
   * Added metadata for ecmwf atmospheric 37r2.
 
@@ -10,7 +10,7 @@ wdb-gribload (1.0.2-1) lucid; urgency=medium
   * Install tests updated to use code tables from ECMWF. This is done
     to minimize clashes with other metadata.
 
- -- Michael Akinde <wdb@met.no>  Thu, 17 Mar 2011 12:00:00 +0000
+ -- Michael Akinde <wdb@met.no>  Thu, 05 May 2011 12:00:00 +0000
 
 wdb-gribload (1.0.1-1) lucid; urgency=low
 
