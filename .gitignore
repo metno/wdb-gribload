@@ -11,3 +11,5 @@
 /depcomp
 /config.sub
 /missing
+/.cproject
+/.project
