@@ -12,7 +12,7 @@ AC_INIT(gribLoad, 1.0.1, [wdb@met.no])
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
-AC_CONFIG_MACRO_DIR([../wdb-config/m4])
+AC_CONFIG_MACRO_DIR([config/m4])
 
 #-----------------------------------------------------------------------------
 # Source & Build Directories
@@ -55,16 +55,13 @@ AC_FUNC_MEMCMP
 
 # Check for libraries.
 AC_CXX_REQUIRE_STL
-VL_LIB_READLINE
 
 #-----------------------------------------------------------------------------
 # Module Checks
 #-----------------------------------------------------------------------------
 
 # WDBLOAD
-WDB_LOADERBASE_CHECK
-WDB_CHECK
-
+WDB_LIBWDBLOAD_CHECK
 
 # PQXX
 WDB_PQXX_CHECK(2.6.8)
