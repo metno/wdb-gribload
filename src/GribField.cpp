@@ -277,9 +277,7 @@ GribField::getValidTimeFrom() const
 {
 	getValidityTime();
 	ptime validTimeF;
-	std::string timeUnit = gribHandleReader_->getString( "stepUnits" );
-	long int timeP1 = gribHandleReader_->getLong( "startStep" );
-    validTimeF = validityTime_ + duration( timeUnit, timeP1 );
+    validTimeF = validityTime_;
     string ret = to_iso_extended_string(validTimeF);
     std::replace( ret.begin(), ret.end(), ',', '.' );
     ret += " UTC";
@@ -294,8 +292,12 @@ GribField::getValidTimeTo() const
 	getValidityTime();
 	ptime validTimeT;
 	std::string timeUnit = gribHandleReader_->getString( "stepUnits" );
-	long int timeP1 = gribHandleReader_->getLong( "endStep" );
-    validTimeT = validityTime_ + duration( timeUnit, timeP1 );
+	long int timeP1 = gribHandleReader_->getLong( "startStep" );
+	long int timeP2 = gribHandleReader_->getLong( "endStep" );
+	if (timeP2 > timeP1) {
+	    validTimeT = validityTime_ + duration( timeUnit, timeP2 - timeP1 );
+	}
+    validTimeT = validityTime_;
     string ret = to_iso_extended_string(validTimeT);
     std::replace( ret.begin(), ret.end(), ',', '.' );
     ret += " UTC";

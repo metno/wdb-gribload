@@ -117,14 +117,14 @@ AC_LANG_PUSH([C++])
 # Jasper is required by the grib_api. If the grib_api is compiled with
 # jasper and the latter is not available, the configure will fail.
 AC_SEARCH_LIBS(jas_stream_memopen,
-				[jasper],,,[-lm -ljpeg])
+			   [jasper],,,[-lm -ljpeg])
 
 # Search for the grib_api library
 # automatically adds -lgrib to the LIBS variable
 AC_SEARCH_LIBS(grib_multi_support_on,
-		[grib_api grib],
-		[],
-		[AC_MSG_ERROR([
+			   [grib_api grib],
+			   [],
+			   [AC_MSG_ERROR([
 -------------------------------------------------------------------------
     Could not link with the grib_api library (or linking resulted in
     unresolved symbols). Unresolved symbols could be caused by not being
@@ -136,8 +136,7 @@ AC_SEARCH_LIBS(grib_multi_support_on,
     LDFLAGS: $LDFLAGS
 -------------------------------------------------------------------------
 ])
-		]
-		)
+])
 		
 AC_LANG_POP([C++])
 

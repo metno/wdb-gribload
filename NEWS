@@ -1,3 +1,7 @@
+wdb-gribload (1.0.2~rc2-1) lucid; urgency=medium
+
+  * Fixed validtime issues introduced with 1.0.2~rc1-1
+
 wdb-gribload (1.0.2~rc1-1) lucid; urgency=medium
 
   * Added metadata for ecmwf atmospheric 37r2.

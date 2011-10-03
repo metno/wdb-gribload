@@ -98,27 +98,6 @@ fi
 CPPFLAGS="$CPPFLAGS $pgsql_CPPFLAGS"
 LDFLAGSS="$LDFLAGS $pgsql_LDFLAGS"
 
-# Check PQ Libraries
-# Search for the libpq Library
-# automatically adds -lpq to the LIBS variable
-#AC_SEARCH_LIBS(PQexec, 
-#	       	[pq],	 
-#	       	[pgsql_LIBS="$pgsql_LIBS -lpq"],
-#			[
-#		 	AC_MSG_ERROR([
-#-------------------------------------------------------------------------
-#    Unable to link with libpq. If the library is installed, make sure 
-#    -L(PGSQL_PATH)/lib is in your LDFLAGS, or specify the path in which 
-#    postgres is installed with --with-pgsql=PATH
-#-------------------------------------------------------------------------
-#			])
-#			]
-#)
-
-AC_SUBST(pgsql_CFLAGS)
-AC_SUBST(pgsql_LDFLAGS)
-AC_SUBST(pgsql_LIBS)
-
 	# Header files
     #AC_LANG_PUSH(C++)
 	AC_CHECK_HEADER([postgres.h],
@@ -272,6 +251,26 @@ AC_SUBST(pgsql_LIBS)
 # Usage: WDB_PQXX_CHECK([required_version_number])
 AC_DEFUN([WDB_PQXX_CHECK],
 [
+# Check PQ Libraries
+# Search for the libpq Library
+# automatically adds -lpq to the LIBS variable
+AC_SEARCH_LIBS(PQexec, 
+	       	[pq],	 
+	       	[pgsql_LIBS="$pgsql_LIBS -lpq"],
+			[
+		 	AC_MSG_ERROR([
+-------------------------------------------------------------------------
+    Unable to link with libpq. If the library is installed, make sure 
+    -L(PGSQL_PATH)/lib is in your LDFLAGS, or specify the path in which 
+    postgres is installed with --with-pgsql=PATH
+-------------------------------------------------------------------------
+			])
+			]
+)
+
+AC_SUBST(pgsql_CFLAGS)
+AC_SUBST(pgsql_LDFLAGS)
+AC_SUBST(pgsql_LIBS)
 
 required_pqxx_version=ifelse([$1], [], [2.6.8], [$1])
 
