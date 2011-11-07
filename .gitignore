@@ -1,0 +1,15 @@
+/autom4te.cache
+/build
+/config.guess
+/ltmain.sh
+/.cproject
+/Makefile.in
+/.project
+/compile
+/aclocal.m4
+/configure
+/config.h.in
+/install-sh
+/depcomp
+/config.sub
+/missing

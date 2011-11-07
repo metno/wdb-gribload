@@ -6,7 +6,7 @@
 GRIBLOADMTEST_SUPPORT =		test/metadata/tearDown.in.sh \
 							test/metadata/testEnvironment.in.sh
 
-INSTALLTESTS +=				gribLoadMetadataTest
+#INSTALLTESTS +=				gribLoadMetadataTest
 
 noinst_SCRIPTS +=			gribLoadMetadataTest \
 							$(GRIBLOADMTEST_SUPPORT:.in.sh=.sh) 
