@@ -48,10 +48,13 @@ using namespace boost::filesystem;
 
 namespace {
 
-path getConfigFile( const path & fileName )
+path getConfigFile( const path & sysPath, const path & fileName )
 {
-	static const path sysConfDir = SYSCONFDIR;
-	path confPath = sysConfDir/fileName;
+	path confPath;
+	if (sysPath.empty())
+		confPath = SYSCONFDIR/fileName;
+	else
+		confPath = sysPath/fileName;
 	return confPath;
 }
 
@@ -70,10 +73,10 @@ GribLoader::GribLoader(	LoaderDatabaseConnection & connection,
 	  loadingConfiguration_(loadingOptions),
 	  logHandler_(logHandler)
 {
-	Grib2DataProviderName_.open( getConfigFile("dataprovider.conf").file_string() );
-	Grib2ValueParameter_.open( getConfigFile("valueparameter.conf").file_string() );
-	Grib2LevelParameter_.open( getConfigFile("levelparameter.conf").file_string() );
-	Grib2LevelAdditions_.open( getConfigFile("leveladditions.conf").file_string() );
+	Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").file_string() );
+	Grib2ValueParameter_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter.conf").file_string() );
+	Grib2LevelParameter_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter.conf").file_string() );
+	Grib2LevelAdditions_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions.conf").file_string() );
 }
 
 GribLoader::~GribLoader()

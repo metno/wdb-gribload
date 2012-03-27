@@ -1,3 +1,10 @@
+wdb-gribload (1.0.3~rc1-1) lucid; urgency=low
+
+  * Added the metadata option to permit the specification of the
+    config file location.  
+
+ -- Michael Akinde <wdb@met.no>  Mon, 26 Mar 2012 14:00:00 +0000
+
 wdb-gribload (1.0.2-1) lucid; urgency=low
 
   * Metadata changes to add ECMWF revisions up to 37r3 and hpc forecast.
