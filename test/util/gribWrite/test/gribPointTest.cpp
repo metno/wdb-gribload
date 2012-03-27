@@ -90,5 +90,5 @@ void GribPointTest::testStreams()
 
 	std::istringstream is2( "error," );
 	is2 >> p;
-	CPPUNIT_ASSERT( ! is2 );	
+	CPPUNIT_ASSERT( ! is2 );
 }

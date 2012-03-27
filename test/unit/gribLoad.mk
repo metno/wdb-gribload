@@ -21,7 +21,7 @@ GRIBLOAD_LINK_IN_SOURCES = \
 gribLoadUnitTest_SOURCES = \
 						test/unit/main.cpp \
 						test/unit/GribGridDefinitionTest.cpp \
-                        test/unit/GribGridDefinitionTest.h \
+						test/unit/GribGridDefinitionTest.h \
                         test/unit/GribFieldTest.h \
                         test/unit/GribFieldTest.cpp \
                         test/unit/MockGribHandleReader.h \

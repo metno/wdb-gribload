@@ -54,15 +54,15 @@ using namespace wdb;
 
 void version( ostream & out )
 {
-    out << "wciInstallTest (" << PACKAGE << ") " << VERSION << endl;
+    out << "gribLoadUnitTest (" << PACKAGE << ") " << VERSION << endl;
 }
 
 void help( const options_description & options, ostream & out )
 {
     version( out );
     out << '\n';
-    out << "Run tests for the WDB Call Interface (wci).\n\n";
-    out << "Usage: wciInstallTest [OPTIONS] [TEST_NAME...]\n\n";
+    out << "Run Unit tests for gribLoad.\n\n";
+    out << "Usage: gribLoadUnitTest [OPTIONS] [TEST_NAME...]\n\n";
     out << "OPTIONS can be any of the following:\n";
     out << options << endl;
 }
@@ -103,6 +103,7 @@ int main( int argc, char ** argv )
 	{
 		for ( vector<string>::const_iterator it = c.runTest().begin(); it != c.runTest().end(); ++ it )
 		{
+			clog << "Trying to find test:\t" << * it << endl;
 			CppUnit::Test * testToRun = findTest(* it, allTests);
 			if ( testToRun )
 				runner.addTest( testToRun );

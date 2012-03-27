@@ -44,6 +44,15 @@ double MockGribHandleReader::getDouble(const char * name)
 	throw std::logic_error(errorMsg + name);
 }
 
+std::string MockGribHandleReader::getString(const char * name)
+{
+	ExpectedStr::const_iterator it = expectedStr.find(name);
+	if ( it != expectedStr.end() )
+		return it->second;
+	std::string errorMsg = "Can't find key: ";
+	throw std::logic_error(errorMsg + name);
+}
+
 size_t MockGribHandleReader::getValuesSize( )
 {
 	return grid_.size();
@@ -62,6 +71,6 @@ double * MockGribHandleReader::getValues( )
 
 void MockGribHandleReader::fillGridWith(double value)
 {
-	long size = getLong("numberOfPointsAlongAParallel") * getLong("numberOfPointsAlongAMeridian");
+	long size = getLong("Ni") * getLong("Nj");
 	grid_ = Grid(size, value);
 }

@@ -62,13 +62,6 @@ using namespace wdb::grib;
 namespace
 {
 
-// Data Representations - WMO Code Table 6
-enum {
-    REGULAR_LAT_LON_GRID  = 0,
-    GAUSSIAN_LAT_LON_GRID = 4,
-    ROTATED_LAT_LON_GRID  = 10
-};
-
 typedef std::map<wmo::codeTable::ScanMode, GridGeometry::Orientation> Wmo2InternalScanMode;
 
 const Wmo2InternalScanMode orientation =
@@ -94,20 +87,49 @@ void GribGridDefinition::setup()
     if ( f == orientation.end() )
     	throw std::runtime_error("Unrecognized scan mode");
     GridGeometry::Orientation o = f->second;
-	long iNumber = gribHandleReader_.getLong("numberOfPointsAlongAParallel");
-	long jNumber = gribHandleReader_.getLong("numberOfPointsAlongAMeridian");
-	double iIncrement = gribHandleReader_.getDouble("iDirectionIncrementInDegrees");// * DEG_TO_RAD;
-	if ( gribHandleReader_.getLong("iScansNegatively") )
-		iIncrement *= -1;
 
-	double jIncrement = gribHandleReader_.getDouble("jDirectionIncrementInDegrees");// * DEG_TO_RAD;
-	if ( ! gribHandleReader_.getLong("jScansPositively") )
-		jIncrement *= -1;
+    long iNumber, jNumber;
+    double iIncrement, jIncrement, startI, startJ;
 
-	double startI = gribHandleReader_.getDouble("longitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
-	double startJ = gribHandleReader_.getDouble("latitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
-
-    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+	ostringstream errMsg;
+    switch (getGridType()) {
+    case REGULAR_LONLAT:
+    case ROTATED_LONLAT:
+    	// X and Y size
+    	iNumber = gribHandleReader_.getLong("Ni");
+		jNumber = gribHandleReader_.getLong("Nj");
+		// X/Y increment
+		iIncrement = gribHandleReader_.getDouble("iDirectionIncrementInDegrees");// * DEG_TO_RAD;
+		if ( gribHandleReader_.getLong("iScansNegatively") )
+			iIncrement *= -1;
+		jIncrement = gribHandleReader_.getDouble("jDirectionIncrementInDegrees");// * DEG_TO_RAD;
+		if ( ! gribHandleReader_.getLong("jScansPositively") )
+			jIncrement *= -1;
+		// Start X/Y
+		startI = gribHandleReader_.getDouble("longitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+		startJ = gribHandleReader_.getDouble("latitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+		break;
+    case LAMBERT:
+    	// X and Y size
+    	iNumber = gribHandleReader_.getLong("Nx");
+		jNumber = gribHandleReader_.getLong("Ny");
+		// X/Y increment
+		iIncrement = gribHandleReader_.getDouble("DxInMetres");// * DEG_TO_RAD;
+		if ( gribHandleReader_.getLong("iScansNegatively") )
+			iIncrement *= -1;
+		jIncrement = gribHandleReader_.getDouble("DyInMetres");// * DEG_TO_RAD;
+		if ( ! gribHandleReader_.getLong("jScansPositively") )
+			jIncrement *= -1;
+		// Start X/Y
+		startI = gribHandleReader_.getDouble("longitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+		startJ = gribHandleReader_.getDouble("latitudeOfFirstGridPointInDegrees");// * DEG_TO_RAD;
+		break;
+    default:
+    	errMsg << "Cannot specify the grid geometry.";
+    	throw std::runtime_error( errMsg.str() );
+    	break;
+    }
+    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribGridDefinition" );
     log.debugStream() << "Creating geometry with ("
 					  << iNumber << ", "
 					  << jNumber << ", "
@@ -200,20 +222,45 @@ wmo::codeTable::ScanMode GribGridDefinition::getScanMode() const
 	throw std::runtime_error( errMsg.str() );
 }
 
+GribGridDefinition::grid_type GribGridDefinition::getGridType() const
+{
+	std::string gridType = gribHandleReader_.getString("gridType");
+    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribGridDefinition" );
+    log.debugStream() << "GridType is " << gridType;
+
+    if (gridType == "regular_ll")
+        return REGULAR_LONLAT;
+
+    if (gridType == "rotated_ll")
+        return ROTATED_LONLAT;
+
+    if (gridType == "lambert")
+        return LAMBERT;
+
+    if (gridType == "regular_gg")
+        return REGULAR_GAUSSIAN;
+
+    log.warnStream() << "Could not identify gridType: " << gridType;
+    return UNDEFINED_GRID;
+}
+
 std::string GribGridDefinition::getProjDefinition() const
 {
-	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.griddefinition" );
-
-	switch (gribHandleReader_.getLong("dataRepresentationType"))
-    {
-    case REGULAR_LAT_LON_GRID:
-        log.debug( "Field has a regular lat/lon grid" );
+	ostringstream errMsg;
+    switch (getGridType()) {
+    case REGULAR_LONLAT:
         return regularLatLonProjDefinition();
-    case ROTATED_LAT_LON_GRID:
-        log.debug( "Field has a rotated lat/lon grid" );
+    case ROTATED_LONLAT:
         return rotatedLatLonProjDefinition();
+    case LAMBERT:
+        return lambertProjDefinition();
+    case UNDEFINED_GRID:
+    	errMsg << "Undefined grid type in GRIB file.";
+    	throw std::runtime_error( errMsg.str() );
+    	break;
     default:
-        throw std::runtime_error("Unrecognizable data representation type in GRIB file");
+    	errMsg << "Unsupported grid type in GRIB file.";
+    	throw std::runtime_error( errMsg.str() );
     }
 }
 
@@ -221,7 +268,7 @@ std::string GribGridDefinition::getProjDefinition() const
 std::string
 GribGridDefinition::regularLatLonProjDefinition() const
 {
-    // Define the PROJ definitions of the calculations
+	// Define the PROJ definitions of the calculations
     std::ostringstream srcProjDef;
     srcProjDef << "+proj=longlat";
    	long int earthIsOblate;
@@ -238,8 +285,6 @@ GribGridDefinition::regularLatLonProjDefinition() const
 
 	// Set the PROJ string for SRID
     return srcProjDef.str();
-    // poleLongitude_ = -90.0;
-
 }
 
 std::string
@@ -265,6 +310,41 @@ GribGridDefinition::rotatedLatLonProjDefinition() const
     }
     srcProjDef << " +no_defs";
 
+    // Set the PROJ string for SRID
+    return srcProjDef.str();
+}
+
+std::string
+GribGridDefinition::lambertProjDefinition() const
+{
+    // Define the PROJ definitions used for the computation of the
+    // Rotated projection
+    std::ostringstream srcProjDef;
+    srcProjDef << "+proj=lcc";
+    srcProjDef << " +lat_1=";
+    srcProjDef << gribHandleReader_.getDouble("Latin1InDegrees");
+    srcProjDef << " +lat_2=";
+    srcProjDef << gribHandleReader_.getDouble("Latin2InDegrees");
+    srcProjDef << " +lon_0=";
+	srcProjDef << gribHandleReader_.getDouble("longitudeOfFirstGridPointInDegrees");
+	srcProjDef << " +lat_0=";
+	srcProjDef << - gribHandleReader_.getDouble("latitudeOfFirstGridPointInDegrees");
+   	long int earthShape, radius;
+	ostringstream errMsg;
+	earthShape = gribHandleReader_.getLong("shapeOfTheEarth");;
+    switch (earthShape) {
+    case 0:
+        srcProjDef << " +a=6367470";
+        break;
+    case 1:
+    	radius = gribHandleReader_.getLong("scaledValueOfRadiusOfSphericalEarth");
+        srcProjDef << " +a=" << radius;
+        break;
+    default:
+    	errMsg << "Can not handle given earth shape of lambert projection.";
+    	throw std::runtime_error( errMsg.str() );
+    }
+    srcProjDef << " +units=m +no_defs";
     // Set the PROJ string for SRID
     return srcProjDef.str();
 }

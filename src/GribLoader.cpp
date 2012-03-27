@@ -74,9 +74,12 @@ GribLoader::GribLoader(	LoaderDatabaseConnection & connection,
 	  logHandler_(logHandler)
 {
 	Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").file_string() );
-	Grib2ValueParameter_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter.conf").file_string() );
-	Grib2LevelParameter_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter.conf").file_string() );
-	Grib2LevelAdditions_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions.conf").file_string() );
+	Grib2ValueParameter1_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter1.conf").file_string() );
+	Grib2LevelParameter1_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter1.conf").file_string() );
+	Grib2LevelAdditions1_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions1.conf").file_string() );
+	Grib2ValueParameter2_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter2.conf").file_string() );
+	Grib2LevelParameter2_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter2.conf").file_string() );
+	Grib2LevelAdditions2_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions2.conf").file_string() );
 }
 
 GribLoader::~GribLoader()
@@ -137,6 +140,7 @@ void GribLoader::load( const GribField & field, int fieldNumber )
 
 	try
 	{
+		editionNumber_ = editionNumber( field );
 	    std::string dataProvider = dataProviderName( field );
 	    std::string place = placeName( field );
 	    std::string valueParameter = valueParameterName( field );
@@ -252,19 +256,32 @@ std::string GribLoader::placeName(const GribField & field) const
 std::string GribLoader::valueParameterName(const GribField & field) const
 {
 	stringstream keyStr;
-	keyStr << field.getGeneratingCenter() << ", "
-		   << field.getCodeTableVersionNumber() << ", "
-		   << field.getParameter() << ", "
-		   << field.getTimeRange() << ", "
-		   << "0, 0, 0, 0"; // Default values for thresholds
 	std::string ret;
-	try {
-		ret = Grib2ValueParameter_[keyStr.str()];
+	if (editionNumber_ == 1) {
+		keyStr << field.getGeneratingCenter() << ", "
+			   << field.getCodeTableVersionNumber() << ", "
+			   << field.getParameter1() << ", "
+			   << field.getTimeRange() << ", "
+			   << "0, 0, 0, 0"; // Default values for thresholds
+		try {
+			ret = Grib2ValueParameter1_[keyStr.str()];
+		}
+		catch ( std::out_of_range &e ) {
+			WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
+			log.errorStream() << "Could not identify the value parameter.";
+			throw;
+		}
 	}
-	catch ( std::out_of_range &e ) {
-	    WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
-		log.errorStream() << "Could not identify the value parameter.";
-		throw;
+	else {
+		keyStr << field.getParameter2();
+		try {
+			ret = Grib2ValueParameter2_[keyStr.str()];
+		}
+		catch ( std::out_of_range &e ) {
+			WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
+			log.errorStream() << "Could not identify the value parameter.";
+			throw;
+		}
 	}
 	ret = ret.substr( 0, ret.find(',') );
 	boost::trim( ret );
@@ -274,19 +291,32 @@ std::string GribLoader::valueParameterName(const GribField & field) const
 std::string GribLoader::valueParameterUnit(const GribField & field) const
 {
 	stringstream keyStr;
-	keyStr << field.getGeneratingCenter() << ", "
-		   << field.getCodeTableVersionNumber() << ", "
-		   << field.getParameter() << ", "
-		   << field.getTimeRange() << ", "
-		   << "0, 0, 0, 0"; // Default values for thresholds
 	std::string ret;
-	try {
-		ret = Grib2ValueParameter_[keyStr.str()];
+	if (editionNumber_ == 1) {
+		keyStr << field.getGeneratingCenter() << ", "
+			   << field.getCodeTableVersionNumber() << ", "
+			   << field.getParameter1() << ", "
+			   << field.getTimeRange() << ", "
+			   << "0, 0, 0, 0"; // Default values for thresholds
+		try {
+			ret = Grib2ValueParameter1_[keyStr.str()];
+		}
+		catch ( std::out_of_range &e ) {
+			WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
+			log.errorStream() << "Could not identify the value parameter identified by " << keyStr.str();
+			throw;
+		}
 	}
-	catch ( std::out_of_range &e ) {
-	    WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
-		log.errorStream() << "Could not identify the value parameter.";
-		throw;
+	else {
+		keyStr << field.getParameter2();
+		try {
+			ret = Grib2ValueParameter2_[keyStr.str()];
+		}
+		catch ( std::out_of_range &e ) {
+			WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
+			log.errorStream() << "Could not identify the value parameter identified by " << keyStr.str();
+			throw;
+		}
 	}
 	ret = ret.substr( ret.find(',') + 1 );
 	boost::trim( ret );
@@ -297,10 +327,17 @@ void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const Grib
 {
 	WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
 	bool ignored = false;
+	stringstream keyStr;
+	std::string ret;
 	try {
-		stringstream keyStr;
-		keyStr << field.getLevelParameter();
-		std::string ret = Grib2LevelParameter_[keyStr.str()];
+		if (editionNumber_ == 1) {
+			keyStr << field.getLevelParameter1();
+			ret = Grib2LevelParameter1_[keyStr.str()];
+		}
+		else {
+			keyStr << field.getLevelParameter2();
+			ret = Grib2LevelParameter2_[keyStr.str()];
+		}
 		std::string levelParameter = ret.substr( 0, ret.find(',') );
 		boost::trim( levelParameter );
 		std::string levelUnit = ret.substr( ret.find(',') + 1 );
@@ -323,18 +360,25 @@ void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const Grib
 		ignored = true;
 	}
 	catch ( std::out_of_range &e ) {
-		log.errorStream() << "Could not identify the level parameter.";
+		log.errorStream() << "Could not identify the level parameter identified by " << keyStr.str();
 	}
 	// Find additional level
 	try {
 		stringstream keyStr;
-		keyStr << field.getGeneratingCenter() << ", "
-			   << field.getCodeTableVersionNumber() << ", "
-			   << field.getParameter() << ", "
-			   << field.getTimeRange() << ", "
-			   << "0, 0, 0, 0, "
-			   << field.getLevelParameter(); // Default values for thresholds
-		std::string ret = Grib2LevelAdditions_[keyStr.str()];
+		std::string ret;
+		if (editionNumber_ == 1) {
+			keyStr << field.getGeneratingCenter() << ", "
+				   << field.getCodeTableVersionNumber() << ", "
+				   << field.getParameter1() << ", "
+				   << field.getTimeRange() << ", "
+				   << "0, 0, 0, 0, "
+				   << field.getLevelParameter1(); // Default values for thresholds
+			ret = Grib2LevelAdditions1_[keyStr.str()];
+		}
+		else {
+			keyStr << field.getParameter2();
+			ret = Grib2LevelAdditions2_[keyStr.str()];
+		}
 		if ( ret.length() != 0 ) {
 			std::string levelParameter = ret.substr( 0, ret.find(',') );
 			boost::trim( levelParameter );
@@ -366,12 +410,24 @@ void GribLoader::levelValues( std::vector<wdb::load::Level> & levels, const Grib
 
 int GribLoader::dataVersion( const GribField & field ) const
 {
+	if (editionNumber_ == 1) {
 		return field.getDataVersion();
+	}
+	else {
+		// TODO: Decoding EPS data in GRIB2 is not yet implemented.
+		return 0;
+	}
 }
 
 int GribLoader::confidenceCode( const GribField & field ) const
 {
 		return 0; // Default
+}
+
+
+int GribLoader::editionNumber( const GribField & field ) const
+{
+		return field.getEditionNumber();
 }
 
 namespace

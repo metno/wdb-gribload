@@ -102,6 +102,58 @@ duration( long int wmoTimeUnit, long int gribTime )
     }
 }
 
+/**
+ * Determine Time duration specified by GRIB data.
+ * This function implements WMO Code Table 4.
+ * @param	wmoTimeUnit		Time unit as specified by WMO Code Table 4
+ * @param	gribTime		Amount of time specified
+ * @return	Time duration specified by the above
+ */
+time_duration
+duration( std::string wmoTimeUnit, long int gribTime )
+{
+    time_duration ret;
+    if ( wmoTimeUnit == "s" ) {
+        return time_duration( 0, 0, gribTime, 0 );
+    }
+    if ( wmoTimeUnit == "m" ) {
+        return time_duration( 0, gribTime, 0, 0 );
+    }
+    if ( wmoTimeUnit == "h" ) {
+        return time_duration( gribTime, 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "3h" ) {
+        return time_duration( gribTime * 3, 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "6h" ) {
+        return time_duration( gribTime * 6, 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "12h" ) {
+        return time_duration( gribTime * 12, 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "D" ) {
+        return time_duration( gribTime * 24, 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "M" ) {
+        /// \bug{Month is assumed to be 30 days.}
+        return time_duration( (gribTime * 24 * 30), 0, 0, 0 );
+    }
+    if ( wmoTimeUnit == "Y" ) {
+        return time_duration( 0, 0, static_cast<int>(gribTime * 60 * 60 * 24 * 365.2425), 0 );
+    }
+    if ( wmoTimeUnit == "10Y" ) {
+        return time_duration( 0, 0, static_cast<int>(gribTime * 10 * 60 * 60 * 24 * 365.2425), 0 );
+    }
+    if ( wmoTimeUnit == "30Y" ) {
+        return time_duration( 0, 0, static_cast<int>(gribTime * 30 * 60 * 60 * 24 * 365.2425), 0 );
+    }
+    if ( wmoTimeUnit == "C" ) {
+        return time_duration( 0, 0, static_cast<int>(gribTime * 100 * 60 * 60 * 24 * 365.2425), 0 );
+    }
+    throw std::runtime_error( "Invalid time unit in GRIB file" );
+}
+
+
 } // namespace Support
 
 using namespace wdb::grib;
@@ -168,7 +220,7 @@ GribField::initializeData( wmo::codeTable::ScanMode defaultMode )
 long int
 GribField::getGeneratingCenter() const
 {
-	return gribHandleReader_->getLong( "identificationOfOriginatingGeneratingCentre" );
+	return gribHandleReader_->getLong( "centre" );
 }
 
 long int
@@ -180,85 +232,77 @@ GribField::getGeneratingProcess() const
 string
 GribField::getReferenceTime() const
 {
-	long int century =  gribHandleReader_->getLong( "centuryOfReferenceTimeOfData" );
-	long int year = gribHandleReader_->getLong( "yearOfCentury" );
-	long int month = gribHandleReader_->getLong( "month" );
-	long int day = gribHandleReader_->getLong( "day" );
-	long int hour = gribHandleReader_->getLong( "hour" );
-	long int minute = gribHandleReader_->getLong( "minute" );
-	ptime referenceTime( boost::gregorian::date(((century-1) * 100) + year, month, day),
+	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+	long int date = gribHandleReader_->getLong( "dataDate" );
+	long int time = gribHandleReader_->getLong( "dataTime" );
+	long int year = date / 10000;
+	long int month = (date - (year * 10000)) / 100;
+	long int day = (date - (year * 10000)) - (month * 100);
+	long int hour = time / 100;
+	long int minute = time - (hour * 100);
+	ptime referenceTime( boost::gregorian::date(year, month, day),
                    		 time_duration( hour, minute, 0 ) );
     referenceTime_ = referenceTime;
     string ret = to_iso_extended_string(referenceTime);
     std::replace( ret.begin(), ret.end(), ',', '.' );
     ret += " UTC";
-    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
     log.debugStream() << "Got reference time: " << ret;
     return ret;
 }
 
 string
+GribField::getValidityTime() const
+{
+	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+	long int date = gribHandleReader_->getLong( "validityDate" );
+	long int time = gribHandleReader_->getLong( "validityTime" );
+	long int year = date / 10000;
+	long int month = (date - (year * 10000)) / 100;
+	long int day = (date - (year * 10000)) - (month * 100);
+	long int hour = time / 100;
+	long int minute = time - (hour * 100);
+	ptime validityTime( boost::gregorian::date(year, month, day),
+                   		 time_duration( hour, minute, 0 ) );
+    validityTime_ = validityTime;
+    string ret = to_iso_extended_string(validityTime);
+    std::replace( ret.begin(), ret.end(), ',', '.' );
+    ret += " UTC";
+    log.debugStream() << "Got validity time: " << ret;
+    return ret;
+}
+
+
+string
 GribField::getValidTimeFrom() const
 {
-	getReferenceTime();
+	getValidityTime();
 	ptime validTimeF;
-	long int timeRange = gribHandleReader_->getLong( "timeRangeIndicator" );
-	long int timeUnit, timeP1;
-	switch (timeRange)
-	{
-	case 0:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 10:
-		timeUnit =  gribHandleReader_->getLong( "indicatorOfUnitOfTimeRange" );
-		timeP1 =  gribHandleReader_->getLong( "periodOfTime" );
-	    validTimeF = referenceTime_ + duration( timeUnit, timeP1 );
-	    break;
-	case 1: // Valid at Reference Time
-		validTimeF = referenceTime_;
-		break;
-	default:
-        throw std::runtime_error( "Unrecognized time range in Grib Field" );
-	}
+    validTimeF = validityTime_;
     string ret = to_iso_extended_string(validTimeF);
     std::replace( ret.begin(), ret.end(), ',', '.' );
     ret += " UTC";
+	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    log.debugStream() << "Valid From: " << ret;
     return ret;
 }
 
 string
 GribField::getValidTimeTo() const
 {
-	getReferenceTime();
-    ptime validTimeT;
-	long int timeRange =  gribHandleReader_->getLong( "timeRangeIndicator" );
-	long int timeUnit =  gribHandleReader_->getLong( "indicatorOfUnitOfTimeRange" );
-	long int timeP1, timeP2;
-    switch (timeRange)
-    {
-    case 0:
-    case 10:
-		timeP1 =  gribHandleReader_->getLong( "periodOfTime" );
-    	validTimeT = referenceTime_  + duration( timeUnit, timeP1 );
-		break;
-    case 1:
-    	validTimeT = referenceTime_;
-    	break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-		timeP2 =  gribHandleReader_->getLong( "periodOfTimeIntervals" );
-    	validTimeT = referenceTime_  + duration( timeUnit, timeP2 );
-		break;
-	default:
-        throw std::runtime_error ( "Unrecognized time range in Grib Field" );
-    }
+	getValidityTime();
+	ptime validTimeT;
+	std::string timeUnit = gribHandleReader_->getString( "stepUnits" );
+	long int timeP1 = gribHandleReader_->getLong( "startStep" );
+	long int timeP2 = gribHandleReader_->getLong( "endStep" );
+	if (timeP2 > timeP1) {
+	    validTimeT = validityTime_ + duration( timeUnit, timeP2 - timeP1 );
+	}
+    validTimeT = validityTime_;
     string ret = to_iso_extended_string(validTimeT);
     std::replace( ret.begin(), ret.end(), ',', '.' );
     ret += " UTC";
+	WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    log.debugStream() << "Valid To: " << ret;
     return ret;
 }
 
@@ -269,9 +313,15 @@ GribField::getCodeTableVersionNumber() const
 }
 
 long int
-GribField::getParameter() const
+GribField::getParameter1() const
 {
 	return gribHandleReader_->getLong( "indicatorOfParameter" );
+}
+
+long int
+GribField::getParameter2() const
+{
+	return gribHandleReader_->getLong( "parameter.paramId" );
 }
 
 long int
@@ -281,9 +331,15 @@ GribField::getTimeRange() const
 }
 
 long int
-GribField::getLevelParameter() const
+GribField::getLevelParameter1() const
 {
 	return gribHandleReader_->getLong( "indicatorOfTypeOfLevel" );
+}
+
+std::string
+GribField::getLevelParameter2() const
+{
+	return gribHandleReader_->getString( "typeOfLevel" );
 }
 
 /**
@@ -324,6 +380,14 @@ GribField::getDataVersion() const
     return 0;
 }
 
+int
+GribField::getEditionNumber() const
+{
+	int ret = gribHandleReader_->getLong( "editionNumber" );
+    WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.gribField" );
+    log.debugStream() << "Got GRIB Version: " << ret;
+    return ret;
+}
 
 int
 GribField::numberX() const
@@ -366,8 +430,6 @@ GribField::getProjDefinition() const
 {
 	return grid_->getProjDefinition();
 }
-
-
 
 // Get grid values
 const double *

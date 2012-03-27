@@ -41,9 +41,12 @@ class MockGribHandleReader : public wdb::grib::GribHandleReaderInterface
 public:
 	typedef std::map<std::string, double> Expected;
 	Expected expected;
+	typedef std::map<std::string, std::string> ExpectedStr;
+	ExpectedStr expectedStr;
 
 	virtual long getLong(const char * name);
 	virtual double getDouble(const char * name);
+	virtual std::string getString( const char * name );
 	virtual size_t getValuesSize( );
 	virtual double * getValues( );
 	typedef std::vector<double> Grid;

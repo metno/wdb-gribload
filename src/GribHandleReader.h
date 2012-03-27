@@ -79,6 +79,12 @@ public:
 	 * @return	value
 	 */
 	virtual double getDouble( const char * name );
+	/**
+	 * Get a string value from the grib_handle
+	 * @param	name	the attribute in the GRIB field
+	 * @return	value
+	 */
+	virtual std::string getString( const char * name );
 	/** Get the size of the value grid from the grib_handle
 	 * @return	the size of the value grid in number of doubles
 	 */

@@ -50,12 +50,12 @@ source ${TEST_PATH}/tearDown.sh
 # Generate Test Data
 # If (when) metadata with multiple levels are added, they should be tested here.
 rm -f ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 1 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 3 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 10 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 11 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 15 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
-${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 1 --generatingProcess 254 --parameter 254 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 151 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 167 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 168 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 201 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 202 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
+${GRIBWRITE_PATH}/gribWrite --testGrid --generatingCentre 98 --generatingProcess 254 --parameter 254 --timeValue ${TESTTIME} --timeUnit 1 --timeRangeIndicator 0 --levelValue 0 --levelUnit 102 ${TEST_FILE}
 
 #Execute Test 
 $EXECUTE --logfile $LOGFILE
