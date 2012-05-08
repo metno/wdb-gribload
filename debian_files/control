@@ -9,13 +9,13 @@ Build-Depends: debhelper (>= 5),
  libgrib-api-tools,
  libwdbload2
 Build-Conflicts: autoconf2.13, automake1.4
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 
 Package: wdb-gribload
 Architecture: any
 Depends: ${shlibs:Depends},
  ${misc:Depends},
  libwdbload2,
- libgrib-api-0d-0
+ libgrib-api-1.9.9
 Description: Load GRIB files into wdb
  Read GRIB files and store them into a wdb database.
