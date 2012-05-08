@@ -73,13 +73,13 @@ GribLoader::GribLoader(	LoaderDatabaseConnection & connection,
 	  loadingConfiguration_(loadingOptions),
 	  logHandler_(logHandler)
 {
-	Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").file_string() );
-	Grib2ValueParameter1_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter1.conf").file_string() );
-	Grib2LevelParameter1_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter1.conf").file_string() );
-	Grib2LevelAdditions1_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions1.conf").file_string() );
-	Grib2ValueParameter2_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter2.conf").file_string() );
-	Grib2LevelParameter2_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter2.conf").file_string() );
-	Grib2LevelAdditions2_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions2.conf").file_string() );
+	Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").string() );
+	Grib2ValueParameter1_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter1.conf").string() );
+	Grib2LevelParameter1_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter1.conf").string() );
+	Grib2LevelAdditions1_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions1.conf").string() );
+	Grib2ValueParameter2_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter2.conf").string() );
+	Grib2LevelParameter2_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter2.conf").string() );
+	Grib2LevelAdditions2_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions2.conf").string() );
 }
 
 GribLoader::~GribLoader()
