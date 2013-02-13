@@ -271,7 +271,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
 
     /* 96 = Athens (grib1/0.table)  */
     //GW_CHECK(grib_set_long(handle,"identificationOfOriginatingGeneratingCentre",96),0);
-    GW_CHECK( grib_set_long( handle, "identificationOfOriginatingGeneratingCentre", opt.originatingGeneratingCentre ) );
+    GW_CHECK( grib_set_long( handle, "centre", opt.originatingGeneratingCentre ) );
 
     GW_CHECK( grib_set_long( handle, "generatingProcessIdentifier", opt.originatingGeneratingProcess ) );
     GW_CHECK( grib_set_long( handle, "gridDefinition", 255 ) );
