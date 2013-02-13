@@ -300,8 +300,8 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     /* 1 = Hour (grib1/4.table)  */
     GW_CHECK( grib_set_long( handle, "indicatorOfUnitOfTimeRange", opt.time.unit ) );
 
-    GW_CHECK( grib_set_long( handle, "periodOfTime", opt.time.p1 ) );
-    GW_CHECK( grib_set_long( handle, "periodOfTimeIntervals", opt.time.p2 ) );
+    GW_CHECK( grib_set_long( handle, "P1", opt.time.p1 ) );
+    GW_CHECK( grib_set_long( handle, "P2", opt.time.p2 ) );
 
     /* 1 = Initialized analysis product for reference time (P1=0). (grib1/5.table)  */
     GW_CHECK( grib_set_long( handle, "timeRangeIndicator", opt.time.timeRangeIndicator ) );
