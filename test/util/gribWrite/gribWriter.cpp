@@ -311,7 +311,7 @@ void GribWriter::write( const Options & opt, const Sec4 & data )
     GW_CHECK( grib_set_long( handle, "centuryOfReferenceTimeOfData", (opt.time.year / 100) +1 ) );
 
     /* 0 = Absent (grib1/0.table)  */
-    GW_CHECK( grib_set_long( handle, "identificationOfOriginatingGeneratingSubCentre", 0 ) );
+    GW_CHECK( grib_set_long( handle, "subCentre", 0 ) );
 
     GW_CHECK( grib_set_long( handle, "decimalScaleFactor", 0 ) );
 
