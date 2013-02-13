@@ -60,7 +60,7 @@ ${GRIBWRITE_PATH}/gribWrite --insGrid --generatingCentre 98 --generatingProcess 
 $EXECUTE --logfile $LOGFILE
 
 # Check Result
-if ! $PSQL -q -Atc "select count(*) from test.gridvalue where placeid=(select placeid from test.placeregulargrid where placename='test grid, gribLoad'); " | grep -qE "^0$"
+if ! $PSQL -q -Atc "select count(*) from test.gridvalue_v where placeid=(select placeid from test.placeregulargrid where placename='test grid, gribLoad'); " | grep -qE "^0$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
