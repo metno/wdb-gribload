@@ -82,7 +82,7 @@ fi
 
 
 # Check Result
-if ! $PSQL -q -Atc "select count(*) from test.gridvalue_v where placeid=(select placeid from test.placeregulargrid where placename='hirlam 20 grid' and placenamespaceid = 999)" | grep -qE "^1$"
+if ! $PSQL -q -Atc "select count(*) from test.gridvalue_v where placeid=(select placeid from test.placeregulargrid_v where placename='hirlam 20 grid' and placenamespaceid = 999)" | grep -qE "^1$"
 then
 	endTime=`date +%s%N`
 	totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
