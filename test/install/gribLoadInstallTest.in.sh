@@ -28,6 +28,33 @@ while test -n "$1"; do
     	echo "$SCRIPT_USAGE"; exit 0;;
     --version) 
     	echo "$0 $SCRIPT_VERSION"; exit 0;;
+	--database=*)
+	    WDB_DB=`echo $1 | sed 's/--database=//'`
+	    shift
+	    continue;;
+	-d)
+	    shift
+	    WDB_DB=$1
+	    shift
+	    continue;;
+	--user=*)
+	    WDB_USER=`echo $1 | sed 's/--user=//'`
+	    shift
+	    continue;;
+	-u)
+	    shift
+	    WDB_USER=$1
+	    shift
+	    continue;;
+	--port=*)
+	    WDB_PORT=`echo $1 | sed 's/--port=//'`
+	    shift
+	    continue;;
+	-p)
+	    shift
+	    WDB_PORT=$1
+	    shift
+	    continue;;
     --xml)
 		XML_OPT="-x" 
 		shift
@@ -42,6 +69,22 @@ while test -n "$1"; do
     	echo "$SCRIPT_USAGE"; exit 0;;
 	esac
 done
+
+# DATABASE_NAME
+if test -z "$WDB_DB"; then
+    WDB_DB=$DEF_DB
+fi
+# DATABASE_USER
+if test -z "$WDB_USER"; then
+	WDB_USER=$DEF_USER
+fi
+# DATABASE_PORT
+if test -z "$WDB_PORT"; then
+	WDB_PORT=$DEF_PORT
+fi
+# DATABASE CONFIGURATION
+DB_CONF="-d $WDB_DB -u $WDB_USER -p $WDB_PORT"
+
 
 TOTAL_TESTS=0
 RUN_TESTS=0
@@ -74,9 +117,9 @@ if test -n "$list"
     for tst in $list; do
 	  RUN_TESTS=`expr $RUN_TESTS + 1`;
 	if test "$XML_OPT" != "-x"; then
-    	$tst $RUN_TESTS
+    	$tst $RUN_TESTS $DB_CONF
 	else
-    	XML_OUT="$XML_OUT\n`${tst} -x`"
+    	XML_OUT="$XML_OUT\n`${tst} -x ${DB_CONF}`"
     fi
     TEST_RESULT=$?	
     if  test $TEST_RESULT -eq 0; then \
