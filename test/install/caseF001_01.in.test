@@ -79,6 +79,7 @@ if test -z "$WDB_PORT"; then
 fi
 # DATABASE CONFIGURATION
 export DB_CONF="-d $WDB_DB -u $WDB_USER -p $WDB_PORT"
+export PSQL="psql -d $WDB_DB -U $WDB_USER -p $WDB_PORT"
 
 # Timing
 startTime=`date +%s%N`
