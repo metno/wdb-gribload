@@ -85,7 +85,6 @@ fi
 # DATABASE CONFIGURATION
 DB_CONF="-d $WDB_DB -u $WDB_USER -p $WDB_PORT"
 
-
 TOTAL_TESTS=0
 RUN_TESTS=0
 OK_TESTS=0
@@ -117,7 +116,7 @@ if test -n "$list"
     for tst in $list; do
 	  RUN_TESTS=`expr $RUN_TESTS + 1`;
 	if test "$XML_OPT" != "-x"; then
-    	$tst $RUN_TESTS $DB_CONF
+    	$tst $DB_CONF $RUN_TESTS
 	else
     	XML_OUT="$XML_OUT\n`${tst} -x ${DB_CONF}`"
     fi

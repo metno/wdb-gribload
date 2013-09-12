@@ -27,43 +27,53 @@ export TEST_PATH=__WDB_BUILDDIR__/test/install
 source $TEST_PATH/testEnvironment.sh
 
 # Parse command line
-case $1 in
-    --help) 
-    echo "$SCRIPT_USAGE"; exit 0;;
-    --version) 
-    echo "$0 $SCRIPT_VERSION"; exit 0;;
-	--database=*)
-	    WDB_DB=`echo $1 | sed 's/--database=//'`
-	    shift
-	    continue;;
-	-d)
-	    shift
-	    WDB_DB=$1
-	    shift
-	    continue;;
-	--user=*)
-	    WDB_USER=`echo $1 | sed 's/--user=//'`
-	    shift
-	    continue;;
-	-u)
-	    shift
-	    WDB_USER=$1
-	    shift
-	    continue;;
-	--port=*)
-	    WDB_PORT=`echo $1 | sed 's/--port=//'`
-	    shift
-	    continue;;
-	-p)
-	    shift
-	    WDB_PORT=$1
-	    shift
-	    continue;;
-    --xml)
-		XML_OPT="-x";;
-    -x)
-		XML_OPT="-x";;
-esac
+while test -n "$1"; do
+	case $1 in
+	    --help) 
+	    	echo "$SCRIPT_USAGE"; exit 0;;
+	    --version) 
+	    	echo "$0 $SCRIPT_VERSION"; exit 0;;
+		--database=*)
+		    WDB_DB=`echo $1 | sed 's/--database=//'`
+		    shift
+		    continue;;
+		-d)
+		    shift
+		    WDB_DB=$1
+		    shift
+		    continue;;
+		--user=*)
+		    WDB_USER=`echo $1 | sed 's/--user=//'`
+		    shift
+		    continue;;
+		-u)
+		    shift
+		    WDB_USER=$1
+		    shift
+		    continue;;
+		--port=*)
+		    WDB_PORT=`echo $1 | sed 's/--port=//'`
+		    shift
+		    continue;;
+		-p)
+		    shift
+		    WDB_PORT=$1
+		    shift
+		    continue;;
+	    --xml)
+			XML_OPT="-x"
+		    shift
+		    continue;;
+	    -x)
+			XML_OPT="-x"
+		    shift
+		    continue;;
+		[1-999])
+			NUM=$1
+		    shift
+		    continue;;
+	esac
+done
 
 # DATABASE_NAME
 if test -z "$WDB_DB"; then
@@ -107,7 +117,7 @@ then
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"Not exactly one row was inserted\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (Could not find data)"
+    	echo -e "not ok $NUM - `basename $0`\t$TEST_DESCRIPTION (Could not find data)"
 	fi
     exit 1
 fi
@@ -119,7 +129,7 @@ then
 	if test "$XML_OPT" = "-x"; then
     	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n\t<failure message=\"There are error messages in the log\">\n\t</failure>\n</testcase>"
 	else
-    	echo -e "not ok $1 - `basename $0`\t$TEST_DESCRIPTION (errors in log)"
+    	echo -e "not ok $NUM - `basename $0`\t$TEST_DESCRIPTION (errors in log)"
 	fi
     exit 1
 fi
@@ -133,6 +143,6 @@ totalTime=$(echo "scale = 3; ($endTime-$startTime)/1000000000" | bc -l)
 if test "$XML_OPT" = "-x"; then
 	echo -e "<testcase name=\"`basename $0` $TEST_DESCRIPTION\" time=\"$totalTime\">\n</testcase>"
 else
-	echo -e "ok $1 - `basename $0`\t$TEST_DESCRIPTION"
+	echo -e "ok $NUM - `basename $0`\t$TEST_DESCRIPTION"
 fi
 exit 0
