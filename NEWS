@@ -1,3 +1,10 @@
+wdb-gribload (1.1.0~rc1-1) lucid; urgency=low
+
+  * Updated the gribload naming scheme to conform to met.no
+    standard package naming.  
+
+ -- Michael Akinde <wdb@met.no>  Mon, 17 Jun 2013 12:00:00 +0000
+
 wdb-gribload (1.0.3-1) lucid; urgency=low
 
   * Added the metadata option to permit the specification of the
