@@ -114,20 +114,20 @@ XML_OUT=""
 if test -n "$list"
     then
     for tst in $list; do
-	  RUN_TESTS=`expr $RUN_TESTS + 1`;
-	if test "$XML_OPT" != "-x"; then
-    	$tst $DB_CONF $RUN_TESTS
-	else
-    	XML_OUT="$XML_OUT\n`${tst} -x ${DB_CONF}`"
-    fi
-    TEST_RESULT=$?	
-    if  test $TEST_RESULT -eq 0; then \
-		OK_TESTS=`expr $OK_TESTS + 1`;
-    elif test $TEST_RESULT -eq 77; then \
-	  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; FAILED_TESTS=`expr $FAILED_TESTS + 1`;
-    else \
-	  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; ERROR_TESTS=`expr $ERROR_TESTS + 1`;
-    fi;
+		RUN_TESTS=`expr $RUN_TESTS + 1`;
+		if test "$XML_OPT" != "-x"; then
+	    	$tst $DB_CONF $RUN_TESTS
+		else
+	    	XML_OUT="$XML_OUT\n`${tst} -x ${DB_CONF}`"
+	    fi
+	    TEST_RESULT=$?
+	    if  test $TEST_RESULT -eq 0; then \
+			OK_TESTS=`expr $OK_TESTS + 1`;
+	    elif test $TEST_RESULT -eq 77; then \
+		  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; FAILED_TESTS=`expr $FAILED_TESTS + 1`;
+	    else \
+		  	TOTALFAIL_TESTS=`expr $TOTALFAIL_TESTS + 1`; ERROR_TESTS=`expr $ERROR_TESTS + 1`;
+	    fi;
     done 
 fi
 

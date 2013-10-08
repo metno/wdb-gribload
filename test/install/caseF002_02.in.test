@@ -68,7 +68,7 @@ while test -n "$1"; do
 			XML_OPT="-x"
 		    shift
 		    continue;;
-		[1-999])
+		*)
 			NUM=$1
 		    shift
 		    continue;;
