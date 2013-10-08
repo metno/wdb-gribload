@@ -22,7 +22,8 @@
 # Database Setup
 WDB_CONFIG=__WDB_CONFIG__
 export PSQL="psql `$WDB_CONFIG --psqlArgs`"
-export DEF_DB="`$WDB_CONFIG --database`"
+export DEF_DB="__WDB_DBNAME__"
+#"`$WDB_CONFIG --database`"
 export DEF_USER="`$WDB_CONFIG --user`"
 export DEF_PORT="`$WDB_CONFIG --port`"
 

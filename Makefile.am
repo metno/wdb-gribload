@@ -296,5 +296,3 @@ performancecheck:  $(PERFORMANCETESTS)
 	fi
 
 include config/mk/debian.mk
-
-debian: common-debian

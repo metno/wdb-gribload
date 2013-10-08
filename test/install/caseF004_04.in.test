@@ -20,7 +20,7 @@
 #!/bin/sh
 # Script Information
 export TESTCASE="F004_04"
-export TEST_DESCRIPTION="Already exisiting place definitions are not reloaded into the database"
+export TEST_DESCRIPTION="Already existing place definitions are not reloaded into the database"
 export TEST_PATH=__WDB_BUILDDIR__/test/install
 
 # Test Environment
