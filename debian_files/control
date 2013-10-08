@@ -14,8 +14,7 @@ Standards-Version: 3.9.3
 
 Package: wdb-gribload-1.1
 Architecture: any
-Depends: ${shlibs:Depends},
- ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Provides: wdb-gribload
 Description: Load GRIB files into wdb
  Read GRIB files and store them into a wdb database.
