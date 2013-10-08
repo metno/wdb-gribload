@@ -84,7 +84,7 @@ WDB_PROJ_CHECK
 
 # CPPUNIT
 WDB_CPPUNIT
-
+WDB_DATABASE_NAME
 WDB_TEST_CHECK
 
 #-----------------------------------------------------------------------------

@@ -48,6 +48,24 @@ AC_SUBST([wdb_LIBS], ["-L`$wdb_conf --libdir` -lwdbConfig -lwdbProj -lwdbExcept 
 AC_SUBST([wdb_PKGLIBS], ["-L`$wdb_conf --libdir` -lwdbConfig -lwdbProj -lwdbExcept -lwdbLog -L`$wdb_conf --libdir`/wdb -ltestConfiguration"])
 ])
 
+
+
+#
+# Set Database name for installation/uninstall
+#
+AC_DEFUN([WDB_DATABASE_NAME],
+[
+	AC_ARG_WITH([database_name],
+		  	    AS_HELP_STRING([--with-database-name=DBNAME], 
+	     					   [Specify the name of the database to be installed (default is wdb)]),
+	    		[database_name="$withval"],
+            	[database_name="wdb"])
+	AC_SUBST( [DATABASE_NAME], [$database_name] )
+])
+
+
+
+# WDB_TEXT CHECK
 AC_DEFUN([WDB_TEST_CHECK],
 [
 AC_ARG_WITH([wdb], 
