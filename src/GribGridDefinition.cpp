@@ -271,16 +271,21 @@ GribGridDefinition::regularLatLonProjDefinition() const
 	// Define the PROJ definitions of the calculations
     std::ostringstream srcProjDef;
     srcProjDef << "+proj=longlat";
-   	long int earthIsOblate;
-	earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
-    if (earthIsOblate)
-    {
-        srcProjDef << " +a=6378160.0 +b=6356775.0";
-    }
-    else
-    {
-        srcProjDef << " +a=6367470.0";
-    }
+   	if ( gribHandleReader_.getLong("editionNumber") == 1 )
+   	{
+		long int earthIsOblate;
+		earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
+		if (earthIsOblate)
+		{
+			srcProjDef << " +a=6378160.0 +b=6356775.0";
+		}
+		else
+		{
+			srcProjDef << " +a=6367470.0";
+		}
+   	}
+   	else
+   		srcProjDef << " +a=6367470.0";
     srcProjDef << " +towgs84=0,0,0 +no_defs";
 
 	// Set the PROJ string for SRID
@@ -300,14 +305,20 @@ GribGridDefinition::rotatedLatLonProjDefinition() const
     srcProjDef << - gribHandleReader_.getDouble("latitudeOfSouthernPoleInDegrees");
     // Earth Shape
    	long int earthIsOblate;
-	earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
-    if (earthIsOblate)
-    {
-        srcProjDef << " +a=6378160.0 +b=6356775.0";
-    }
-    else {
-        srcProjDef << " +a=6367470.0";
-    }
+   	if ( gribHandleReader_.getLong("editionNumber") == 1 )
+   	{
+		earthIsOblate = gribHandleReader_.getLong("earthIsOblate");;
+		if (earthIsOblate)
+		{
+			srcProjDef << " +a=6378160.0 +b=6356775.0";
+		}
+		else {
+			srcProjDef << " +a=6367470.0";
+		}
+   	}
+   	else
+   		srcProjDef << " +a=6367470.0";
+
     srcProjDef << " +no_defs";
 
     // Set the PROJ string for SRID

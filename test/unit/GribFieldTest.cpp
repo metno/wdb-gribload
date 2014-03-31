@@ -60,6 +60,7 @@ void GribFieldTest::setUp()
 	reader->expected["latitudeOfSouthernPoleInDegrees"] = -22;
 	reader->expected["longitudeOfSouthernPoleInDegrees"] = -40;
 	reader->expected["earthIsOblate"] = 0;
+	reader->expected["editionNumber"] = 1;
 
 	reader->expectedStr["gridType"] = "regular_ll";
 
