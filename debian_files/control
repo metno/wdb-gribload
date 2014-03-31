@@ -1,8 +1,9 @@
 Source: wdb-gribload
 Section: science
 Priority: extra
-Maintainer: Vegard Bønes <wdb@met.no>
-Build-Depends: debhelper (>= 5),
+Maintainer: WDB Group, Meteorologisk institutt <wdb@met.no>
+Uploaders: Michael O. Akinde <michael.akinde@met.no>
+Build-Depends: debhelper (>= 7),
  autotools-dev,
  cdbs,
  libgrib-api-dev,
@@ -11,11 +12,9 @@ Build-Depends: debhelper (>= 5),
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.9.3
 
-Package: wdb-gribload
+Package: wdb-gribload-1.1
 Architecture: any
-Depends: ${shlibs:Depends},
- ${misc:Depends},
- libwdbload2,
- libgrib-api-1.9.9
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: wdb-gribload
 Description: Load GRIB files into wdb
  Read GRIB files and store them into a wdb database.

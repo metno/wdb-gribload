@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(gribLoad, 1.0.3, [wdb@met.no])
+AC_INIT(gribLoad, 1.1.0, [wdb@met.no])
 # Config
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
@@ -84,7 +84,7 @@ WDB_PROJ_CHECK
 
 # CPPUNIT
 WDB_CPPUNIT
-
+WDB_DATABASE_NAME
 WDB_TEST_CHECK
 
 #-----------------------------------------------------------------------------

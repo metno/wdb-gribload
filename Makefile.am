@@ -117,7 +117,12 @@ include test/util/configuration/gribLoad.mk
 clean-local:
 	rm -rf @builddir@/var/
 
+#-----------------------------------------------------------------------------
+# Dist Check
+#-----------------------------------------------------------------------------
 
+DISTCHECK_DATABASE_NAME = $(DATABASE_NAME)
+DISTCHECK_CONFIGURE_FLAGS = --with-database-name=$(DISTCHECK_DATABASE_NAME)
 
 #-----------------------------------------------------------------------------
 # Install Check Framework
@@ -296,5 +301,3 @@ performancecheck:  $(PERFORMANCETESTS)
 	fi
 
 include config/mk/debian.mk
-
-debian: common-debian
