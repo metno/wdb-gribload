@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 5),
  cdbs,
  libgrib-api-dev,
  libgrib-api-tools,
- libwdbload2
+ libwdbload-dev
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.9.3
 
