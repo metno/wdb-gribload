@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 7),
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.9.3
 
-Package: wdb-gribload-1.1
+Package: wdb-gribload-1.2
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Provides: wdb-gribload

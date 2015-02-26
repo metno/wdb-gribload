@@ -34,6 +34,7 @@
 #include "GribField.h"
 #include <wdbException.h>
 #include <wdbLogHandler.h>
+#include <wdb/errors.h>
 #include <wdb/LoaderDatabaseConnection.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
@@ -73,13 +74,20 @@ GribLoader::GribLoader(	LoaderDatabaseConnection & connection,
 	  loadingConfiguration_(loadingOptions),
 	  logHandler_(logHandler)
 {
-	Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").string() );
-	Grib2ValueParameter1_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter1.conf").string() );
-	Grib2LevelParameter1_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter1.conf").string() );
-	Grib2LevelAdditions1_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions1.conf").string() );
-	Grib2ValueParameter2_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter2.conf").string() );
-	Grib2LevelParameter2_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter2.conf").string() );
-	Grib2LevelAdditions2_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions2.conf").string() );
+	try
+	{
+		Grib2DataProviderName_.open( getConfigFile(loadingOptions.metadata().path, "dataprovider.conf").string() );
+		Grib2ValueParameter1_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter1.conf").string() );
+		Grib2LevelParameter1_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter1.conf").string() );
+		Grib2LevelAdditions1_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions1.conf").string() );
+		Grib2ValueParameter2_.open( getConfigFile(loadingOptions.metadata().path, "valueparameter2.conf").string() );
+		Grib2LevelParameter2_.open( getConfigFile(loadingOptions.metadata().path, "levelparameter2.conf").string() );
+		Grib2LevelAdditions2_.open( getConfigFile(loadingOptions.metadata().path, "leveladditions2.conf").string() );
+	}
+	catch ( std::exception & e)
+	{
+		throw wdb::load::LoadError(UnableToReadConfigFile, e.what());
+	}
 }
 
 GribLoader::~GribLoader()
@@ -117,6 +125,8 @@ int GribLoader::load( GribFile & gribFile )
 	        catch (wdb::wdb_exception & e)
 	        {
 	        	++ failCount;
+
+	        	wdb::load::registerError(wdb::load::FieldFailedToLoad);
 
 	        	// We don't stop loading on errors. Merely log the error, and go to the next field
 	            WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.readgrib" );
@@ -189,6 +199,7 @@ void GribLoader::load( const GribField & field, int fieldNumber )
 	}
 	catch ( wdb::missing_metadata &e )
 	{
+		wdb::load::registerError(wdb::load::FieldFailedToLoad);
 	    WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
 		log.warnStream() << e.what() << " Data field not loaded.";
 	}
@@ -200,8 +211,9 @@ void GribLoader::load( const GribField & field, int fieldNumber )
 	*/
 	catch ( std::exception & e )
 	{
+		wdb::load::registerError(wdb::load::FieldFailedToLoad);
 	    WDB_LOG & log = WDB_LOG::getInstance( "wdb.grib.gribloader" );
-		log.errorStream() << e.what() << " Data field not loaded.";
+		log.warnStream() << e.what() << " Data field not loaded.";
 	}
 }
 

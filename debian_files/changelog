@@ -1,3 +1,15 @@
+wdb-gribload (1.2.0-1) precise; urgency=low
+
+  * new version, with new exit codes
+
+ -- Michael Akinde <wdb@met.no>  Thu, 26 Feb 2015 16:46:15 +0100
+
+wdb-gribload (1.1.1-1) precise; urgency=low
+
+  * more metadata
+
+ -- Michael Akinde <wdb@met.no>  Mon, 31 Mar 2014 14:14:27 +0200
+
 wdb-gribload (1.1.0~rc1-1) lucid; urgency=low
 
   * Updated the gribload naming scheme to conform to met.no

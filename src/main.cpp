@@ -49,6 +49,7 @@
 #include "GribLoader.h"
 
 #include <wdbException.h>
+#include <wdb/errors.h>
 #include <wdb/LoaderDatabaseConnection.h>
 #include <wdb/LoaderConfiguration.h>
 #include <wdbLogHandler.h>
@@ -103,73 +104,77 @@ int
 main(int argc, char **argv)
 {
 	wdb::load::LoaderConfiguration conf;
-    try
+	try
     {
     	conf.parse( argc, argv );
-    	if ( conf.general().help )
-    	{
-    		help( conf.shownOptions(), cout );
-    		return 0;
-    	}
-    	if ( conf.general().version )
-    	{
-    		version( cout );
-    		return 0;
-    	}
-    	if ( conf.input().file.empty() )
-    	{
-    		cerr << "No inputfile." << endl;
-    		return 1;
-    	}
-    }
-    catch( exception & e ) {
-        cerr << e.what() << endl;
-        help( conf.shownOptions(), clog );
-        return 1;
-    }
+	} catch (wdb::load::LoadError & e)
+	{
+		std::clog << e.what() << std::endl;
+		return wdb::load::exitStatus();
+	}
+	if ( conf.general().help )
+	{
+		help( conf.shownOptions(), cout );
+		return 0;
+	}
+	if ( conf.general().version )
+	{
+		version( cout );
+		return 0;
+	}
+	if ( conf.input().file.empty() )
+	{
+		cerr << "No inputfile." << endl;
+		return 1;
+	}
 
 	WdbLogHandler logHandler( conf.logging().loglevel, conf.logging().logfile );
     WDB_LOG & log = WDB_LOG::getInstance( "wdb.gribLoad.main" );
 
     log.debug( "Starting gribLoad" );
 
-    // File sanity check
-    const std::vector<std::string> & filesToLoad = conf.input().file;
-    for ( std::vector<std::string>::const_iterator it = filesToLoad.begin(); it != filesToLoad.end(); ++ it )
+    try
     {
-    	using namespace boost::filesystem;
-    	const path p(*it);
-    	if ( (! exists(p)) || is_directory(p) )
-    	{
-    		log.fatalStream() << * it << ": No such file - will not load";
-    		return 1;
-    	}
+
+		// File sanity check
+		const std::vector<std::string> & filesToLoad = conf.input().file;
+		for ( std::vector<std::string>::const_iterator it = filesToLoad.begin(); it != filesToLoad.end(); ++ it )
+		{
+			using namespace boost::filesystem;
+			const path p(*it);
+			if ( (! exists(p)) || is_directory(p) )
+				throw wdb::load::LoadError(wdb::load::UnableToReadFile, * it + ": No such file - will not load");
+		}
+
+		// Database Connection
+		log.debugStream() << "Attempting to connect to database " << conf.pqDatabaseConnection();
+	//   	wdb::load::LoaderDatabaseConnection connection( conf.pqDatabaseConnection(), conf.database().user );
+		wdb::load::LoaderDatabaseConnection connection( conf );
+		log.debugStream() << "...connected";
+
+		GribLoader loader( connection, conf, logHandler );
+
+		for ( std::vector<std::string>::const_iterator file = filesToLoad.begin(); file != filesToLoad.end(); ++ file )
+		{
+			logHandler.setObjectName( * file );
+			GribFile gribFile(* file);
+			loader.load(gribFile);
+		}
+
+		log.debugStream() << "Done";
     }
+	catch ( wdb::load::LoadError & e )
+	{
+		log.fatal(e.what());
+		return wdb::load::exitStatus();
+	}
+	catch ( std::exception & e )
+	{
+		log.fatalStream() << e.what();
+		return int(wdb::load::UnknownError);
+	}
 
-    // Database Connection
-    log.debugStream() << "Attempting to connect to database " << conf.pqDatabaseConnection();
-//   	wdb::load::LoaderDatabaseConnection connection( conf.pqDatabaseConnection(), conf.database().user );
-   	wdb::load::LoaderDatabaseConnection connection( conf );
-    log.debugStream() << "...connected";
-
-    GribLoader loader( connection, conf, logHandler );
-
-    for ( std::vector<std::string>::const_iterator file = filesToLoad.begin(); file != filesToLoad.end(); ++ file )
-    {
-        logHandler.setObjectName( * file );
-	    try {
-	    	GribFile gribFile(* file);
-
-	    	loader.load(gribFile);
-	    }
-	    catch ( std::exception & e) {
-	        log.errorStream() << "Unrecoverable error when reading file " << * file << ". "
-							  << e.what();
-	    }
-    }
-
-    log.debugStream() << "Done";
-    return 0;
+	return wdb::load::exitStatus();
 }
 
 /**
