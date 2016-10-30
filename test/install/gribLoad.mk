@@ -8,8 +8,6 @@ GRIBLOADTEST_SOURCES =		test/install/caseF001_01.in.test \
 							test/install/caseF001_03.in.test \
 							test/install/caseF002_02.in.test \
 							test/install/caseF004_01.in.test \
-							test/install/caseF004_03.in.test \
-							test/install/caseF004_04.in.test \
 							test/install/caseF005_01.in.test \
 							test/install/caseF005_02.in.test \
 							test/install/caseF007_01.in.test \
@@ -23,6 +21,10 @@ GRIBLOADTEST_SOURCES =		test/install/caseF001_01.in.test \
 
 # 003_01 removed due to the grib file being corrupt/unreadable
 #							test/install/caseF003_01.in.test
+# 004_03 & 004_04 removed due to the error code changes in wdb_gribload.
+# This functionality is no longer supported
+#							test/install/caseF004_03.in.test \
+#							test/install/caseF004_04.in.test \
 
 GRIBLOADTEST_SUPPORT =		test/install/tearDown.in.sh \
 							test/install/testEnvironment.in.sh

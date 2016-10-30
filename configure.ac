@@ -10,9 +10,11 @@
 AC_PREREQ(2.59)
 AC_INIT(gribLoad, 1.2.1, [wdb@met.no])
 # Config
+AM_PROG_AR
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([config/m4])
+AC_PROG_LIBTOOL
 
 #-----------------------------------------------------------------------------
 # Source & Build Directories
@@ -29,7 +31,6 @@ AC_PROG_AWK
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
-AC_PROG_LIBTOOL
 
 #-----------------------------------------------------------------------------
 # Checks
@@ -62,10 +63,6 @@ AC_CXX_REQUIRE_STL
 
 # WDBLOAD
 WDB_LIBWDBLOAD_CHECK
-
-
-
-
 
 # PQXX
 WDB_PQXX_CHECK(2.6.8)
